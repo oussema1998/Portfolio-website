@@ -5,7 +5,8 @@ export default function AppointmentSection() {
     <section className="relative w-full overflow-hidden">
       <div className="relative h-[480px] w-full md:h-[560px]">
         <Image
-          src="/images/rendez_vous_3.png"
+        
+          src="/images/rendez_vous_4.png"
           alt="Prendre rendez-vous"
           fill
           sizes="100vw"

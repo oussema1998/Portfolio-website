@@ -56,7 +56,7 @@ export default function ContactPage() {
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[44vh] min-h-[320px] w-full md:h-[50vh] md:min-h-[380px]">
           <Image
-            src="/images/rendez_vous_3.png"
+            src="/images/rendez_vous_4.png"
             alt="Bannière Contact"
             fill
             priority
