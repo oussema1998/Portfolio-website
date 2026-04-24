@@ -1,9 +1,10 @@
+import React from "react";
 type Service = {
   name: string;
   pitch: string;
   details: string;
   deliverables: string[];
-  icon: JSX.Element;
+  icon: React.ReactNode;
 };
 
 const services: Service[] = [
