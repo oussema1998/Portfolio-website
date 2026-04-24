@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,  } from "react";
+import React from "react";
 
 type Stat = {
 	value: number;
 	unit?: string;
 	label: string;
-	icon: JSX.Element;
+	icon: React.ReactNode;
 };
 
 const stats: Stat[] = [
