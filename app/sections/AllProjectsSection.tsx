@@ -9,6 +9,66 @@ type ActiveMedia = {
 	media: ProjectMedia;
 };
 
+const getYoutubeVideoId = (url: string): string | null => {
+	try {
+		const parsed = new URL(url);
+
+		if (parsed.hostname.includes("youtu.be")) {
+			return parsed.pathname.replace("/", "") || null;
+		}
+
+		if (parsed.hostname.includes("youtube.com")) {
+			const id = parsed.searchParams.get("v");
+			if (id) {
+				return id;
+			}
+
+			const pathMatch = parsed.pathname.match(/\/embed\/([^/?]+)/);
+			return pathMatch?.[1] ?? null;
+		}
+
+		return null;
+	} catch {
+		return null;
+	}
+};
+
+const getYoutubeEmbedUrl = (url: string): string | null => {
+	try {
+		const parsed = new URL(url);
+		const id = getYoutubeVideoId(url);
+
+		if (!id) {
+			return null;
+		}
+
+		const rawTime = parsed.searchParams.get("t") ?? "";
+		const seconds = Number.parseInt(rawTime.replace("s", ""), 10);
+		const startParam = Number.isNaN(seconds) ? "" : `?start=${seconds}`;
+
+		return `https://www.youtube.com/embed/${id}${startParam}`;
+	} catch {
+		return null;
+	}
+};
+
+const getMediaPreviewStyle = (media: ProjectMedia): React.CSSProperties | undefined => {
+	if (media.type !== "video") {
+		return undefined;
+	}
+
+	const id = getYoutubeVideoId(media.href);
+	if (!id) {
+		return undefined;
+	}
+
+	return {
+		backgroundImage: `url(https://img.youtube.com/vi/${id}/hqdefault.jpg)`,
+		backgroundSize: "cover",
+		backgroundPosition: "center",
+	};
+};
+
 export default function AllProjectsSection() {
 	const [activeMedia, setActiveMedia] = useState<ActiveMedia | null>(null);
 
@@ -22,7 +82,7 @@ export default function AllProjectsSection() {
 
 	return (
 		<>
-			<section className="w-full bg-[#151515] px-4 py-18 md:px-8 md:py-20">
+			<section id="tous-mes-projets" className="w-full scroll-mt-28 bg-[#151515] px-4 py-18 md:px-8 md:py-20">
 				<div className="mx-auto w-full max-w-[1480px] text-white">
 					<div className="flex flex-col gap-4 text-center md:items-center">
 						<span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
@@ -30,7 +90,7 @@ export default function AllProjectsSection() {
 						</span>
 						<h2 className="text-4xl font-semibold md:text-5xl">Portfolio complet</h2>
 						<p className="mx-auto max-w-4xl text-base leading-8 text-white/80 md:text-lg">
-							L'ensemble des projets realises, du freelance aux stages, avec leurs
+							L&apos;ensemble des projets realises, du freelance aux stages, avec leurs
 							ressources et demonstrations.
 						</p>
 					</div>
@@ -84,15 +144,44 @@ export default function AllProjectsSection() {
 										<p className="text-sm font-semibold uppercase tracking-[1.2px] text-white/90">
 											Medias
 										</p>
-										<div className="mt-3 flex flex-wrap gap-2">
+										<div className="mt-3 flex flex-wrap gap-2.5">
 											{project.medias.map((media) => (
 												<button
 													key={`${project.title}-${media.href}`}
 													type="button"
 													onClick={() => setActiveMedia({ projectTitle: project.title, media })}
-													className="inline-flex items-center rounded-sm border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:border-[#FF1E27]/70 hover:text-[#FF1E27]"
+													className="group relative overflow-hidden rounded-sm border border-white/20 bg-white/5 transition-colors hover:border-[#FF1E27]/70"
+													aria-label={`Ouvrir le media ${media.label}`}
 												>
-													{media.label}
+													<div className="relative h-16 w-24">
+														{media.type === "image" ? (
+															<Image
+																src={media.href}
+																alt={media.label}
+																fill
+																sizes="96px"
+																className="object-cover"
+															/>
+														) : null}
+
+														{media.type === "video" ? (
+															<div className="relative h-full w-full" style={getMediaPreviewStyle(media)}>
+																<div className="absolute inset-0 bg-black/35" />
+																<div className="absolute inset-0 grid place-items-center text-white">
+																	<span className="grid h-6 w-6 place-items-center rounded-full bg-black/55 text-[10px]">▶</span>
+																</div>
+															</div>
+														) : null}
+
+														{media.type === "pdf" ? (
+															<div className="grid h-full w-full place-items-center bg-zinc-900 text-[11px] font-semibold uppercase tracking-[1px] text-white/90">
+																PDF
+															</div>
+														) : null}
+													</div>
+													<div className="border-t border-white/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.8px] text-white/90 group-hover:text-[#FF1E27]">
+														{media.label}
+													</div>
 												</button>
 											))}
 										</div>
@@ -158,10 +247,13 @@ export default function AllProjectsSection() {
 							) : null}
 
 							{activeMedia.media.type === "video" ? (
-								<video
-									src={activeMedia.media.href}
-									controls
-									className="h-auto max-h-[78vh] w-full rounded-sm bg-black"
+								<iframe
+									src={getYoutubeEmbedUrl(activeMedia.media.href) ?? activeMedia.media.href}
+									title={activeMedia.media.label}
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+									referrerPolicy="strict-origin-when-cross-origin"
+									allowFullScreen
+									className="h-[78vh] w-full rounded-sm border border-white/10 bg-black"
 								/>
 							) : null}
 

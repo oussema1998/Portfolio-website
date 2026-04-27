@@ -39,7 +39,7 @@ const technologies: Technology[] = [
 
 export default function TechnologiesShowcaseSection() {
 	return (
-		<section className="w-full bg-[#0A0A0A] px-4 py-18 md:px-8 md:py-20">
+		<section id="mes-competences" className="w-full scroll-mt-28 bg-[#0A0A0A] px-4 py-18 md:px-8 md:py-20">
 			<div className="mx-auto w-full max-w-[1480px] text-white">
 				<div className="text-center">
 					<span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">

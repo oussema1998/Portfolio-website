@@ -1,5 +1,6 @@
 import React from "react";
 type Service = {
+  id: string;
   name: string;
   pitch: string;
   details: string;
@@ -9,6 +10,7 @@ type Service = {
 
 const services: Service[] = [
   {
+    id: "service-data-engineering",
     name: "Architecture data & automatisation",
     pitch: "Structurer, fiabiliser et fluidifier vos flux de données.",
     details:
@@ -25,6 +27,7 @@ const services: Service[] = [
     ),
   },
   {
+    id: "service-data-analysis",
     name: "Data analysis & reporting",
     pitch: "Transformer les données en décisions lisibles et utiles.",
     details:
@@ -40,6 +43,7 @@ const services: Service[] = [
     ),
   },
   {
+    id: "service-intelligence-artificielle",
     name: "Solutions d'intelligence artificielle",
     pitch: "Automatiser, assister et enrichir l'expérience utilisateur.",
     details:
@@ -55,6 +59,7 @@ const services: Service[] = [
     ),
   },
   {
+    id: "service-developpement-web",
     name: "Développement web",
     pitch: "Donner vie à des outils web performants et utiles.",
     details:
@@ -72,7 +77,7 @@ const services: Service[] = [
 
 export default function ServicesOfferSection() {
   return (
-    <section className="w-full bg-[#151515] px-4 py-20 md:px-8 md:py-24">
+    <section id="mes-services" className="w-full scroll-mt-28 bg-[#151515] px-4 py-20 md:px-8 md:py-24">
       <div className="mx-auto w-full max-w-[1480px] text-white">
         <div className="text-center">
           <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
@@ -90,6 +95,7 @@ export default function ServicesOfferSection() {
           {services.map((service) => (
             <article
               key={service.name}
+              id={service.id}
               className="flex h-full flex-col rounded-sm border border-white/10 bg-[#0E0E0E] px-6 py-7 shadow-[0_14px_40px_rgba(0,0,0,0.26)] transition-transform duration-300 hover:-translate-y-1 hover:border-[#FF1E27]/70"
             >
               <div className="grid h-14 w-14 place-items-center rounded-md border border-[#FF1E27]/50 bg-[#FF1E27]/10 text-[#FF1E27]">

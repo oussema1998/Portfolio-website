@@ -55,7 +55,7 @@ const projects: Project[] = [
 		medias: [
 			{
 				label: "Video commerciale",
-				href: "/images/projects_ressources/devhotel/Vid_Commerciale.mp4",
+				href: "https://www.youtube.com/watch?v=9r0d8kWnfSY",
 				type: "video",
 			},
 			{
@@ -79,7 +79,7 @@ const projects: Project[] = [
 		medias: [
 			{
 				label: "Video demonstrative",
-				href: "/images/projects_ressources/FAQ_AI_Agent/Vid%C3%A9o-Demonstrative.mp4",
+				href: "https://www.youtube.com/watch?v=mQggdGgLxDg",
 				type: "video",
 			},
 		],
@@ -158,7 +158,7 @@ const projects: Project[] = [
 		medias: [
 			{
 				label: "Video demonstrative",
-				href: "/images/projects_ressources/SPN/SPN_FINAL.mp4",
+				href: "https://www.youtube.com/watch?v=qNLugSRi8zM&t=41s",
 				type: "video",
 			},
 		],

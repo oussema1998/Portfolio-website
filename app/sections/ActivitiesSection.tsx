@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const activities = [
   {
@@ -6,30 +7,35 @@ const activities = [
     title: "Président d'un club universitaire",
     image: "/images/activites_transversales/coexister_club.jpeg",
     cornerNote: "président du club: 2 mandats",
+    targetId: "activite-president-club",
   },
   {
     category: "Sécurité",
     title: "Maître-nageur sauveteur",
     image: "/images/activites_transversales/lifeguard.jpg",
     cornerNote: "maître-nageur: 2 saisons d'été",
+    targetId: "activite-maitre-nageur",
   },
   {
     category: "Sport",
     title: "Coach de musculation",
     image: "/images/activites_transversales/musculation.jpg",
     cornerNote: "musculation: +10 ans",
+    targetId: "loisir-musculation",
   },
   {
     category: "Communication",
     title: "Agent téléphonique",
     image: "/images/activites_transversales/active_contact2.png",
     cornerNote: "agent téléphonique: + 4 mois",
+    targetId: "activite-agent-telephonique",
   },
   {
     category: "Outdoor",
     title: "Campeur",
     image: "/images/activites_transversales/camping.jpg",
     cornerNote: "campeur: +10 campings",
+    targetId: "loisir-camping",
   },
 ];
 
@@ -88,13 +94,13 @@ export default function ActivitiesSection() {
                   <h3 className="mt-2 pr-16 text-xl font-bold uppercase leading-tight text-white [font-family:var(--font-display)] md:text-2xl">
                     {activity.title}
                   </h3>
-                  <button
-                    type="button"
+                  <Link
+                    href={`/activites#${activity.targetId}`}
                     aria-label={`Voir ${activity.title}`}
                     className="absolute bottom-5 right-6 grid h-10 w-10 place-items-center bg-white/10 text-2xl text-white transition-colors hover:bg-[#FF1E27]"
                   >
                     ›
-                  </button>
+                  </Link>
                 </div>
               </div>
             </article>

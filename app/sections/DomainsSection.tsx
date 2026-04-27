@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 export default function DomainsSection() {
   return (
-    <section className="w-full bg-[#0A0A0A] px-4 py-20 md:px-8 md:py-24">
+    <section className="w-full bg-[#0A0A0A] px-4 pb-1 pt-20 md:px-8 md:pb-1 md:pt-24">
       <div className="mx-auto w-full max-w-none text-center text-white">
         <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
           Mes domaines
@@ -54,6 +56,16 @@ export default function DomainsSection() {
               anticiper et améliorer la performance des processus métiers.
             </p>
           </article>
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/services#mes-services"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[1px] text-white transition-colors hover:text-[#FF1E27]"
+          >
+            Ce que je propose
+            <span aria-hidden="true">&gt;</span>
+          </Link>
         </div>
       </div>
     </section>

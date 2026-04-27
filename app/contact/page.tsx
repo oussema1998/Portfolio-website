@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -128,88 +129,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <form className="mt-8 grid gap-5" action="mailto:belhaouene.oussema@esprit.tn" method="post" encType="text/plain">
-              <div className="grid gap-5 md:grid-cols-2">
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-white/82">Nom complet</span>
-                  <input
-                    type="text"
-                    name="nom"
-                    placeholder="Votre nom"
-                    className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
-                  />
-                </label>
-
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-white/82">Email</span>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="votre@email.com"
-                    className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
-                  />
-                </label>
-              </div>
-
-              <div className="grid gap-5 md:grid-cols-2">
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-white/82">Téléphone</span>
-                  <input
-                    type="tel"
-                    name="telephone"
-                    placeholder="+216 92 073 061"
-                    className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
-                  />
-                </label>
-
-                <label className="grid gap-2">
-                  <span className="text-sm font-medium text-white/82">Type de besoin</span>
-                  <select
-                    name="besoin"
-                    className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors focus:border-[#FF1E27]/70"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>
-                      Sélectionner
-                    </option>
-                    <option>Architecture data</option>
-                    <option>Analyse & reporting</option>
-                    <option>Intelligence artificielle</option>
-                    <option>Développement web</option>
-                    <option>Autre</option>
-                  </select>
-                </label>
-              </div>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-medium text-white/82">Sujet</span>
-                <input
-                  type="text"
-                  name="sujet"
-                  placeholder="Objet de votre demande"
-                  className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
-                />
-              </label>
-
-              <label className="grid gap-2">
-                <span className="text-sm font-medium text-white/82">Message</span>
-                <textarea
-                  name="message"
-                  rows={7}
-                  placeholder="Décrivez votre besoin, votre contexte et vos objectifs."
-                  className="rounded-sm border border-white/12 bg-[#0E0E0E] px-4 py-3 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
-                />
-              </label>
-
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  className="inline-flex h-12 items-center justify-center rounded-sm bg-[#FF1E27] px-8 text-sm font-semibold uppercase tracking-[1.3px] text-white transition-colors hover:bg-[#ff3e46]"
-                >
-                  Envoyer la demande
-                </button>
-              </div>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </section>

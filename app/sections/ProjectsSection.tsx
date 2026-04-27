@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const featuredProjects = [
   {
@@ -38,7 +39,7 @@ const featuredProjects = [
 
 export default function ProjectsSection() {
   return (
-    <section className="w-full bg-[#151515] px-4 py-18 md:px-8 md:py-20">
+    <section className="w-full bg-[#151515] px-4 pb-1 pt-18 md:px-8 md:pb-1 md:pt-20">
       <div className="mx-auto w-full max-w-[1480px] text-white">
         <div className="flex flex-col gap-4 text-center md:items-center">
           <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
@@ -94,23 +95,19 @@ export default function ProjectsSection() {
                 {project.description}
               </p>
               <div className="mt-6 flex items-center justify-between">
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  href="/projets#tous-mes-projets"
                   className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[1.2px] text-white transition-colors group-hover:text-[#FF1E27]"
                 >
                   Voir plus
-                </a>
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noreferrer"
+                </Link>
+                <Link
+                  href="/projets#tous-mes-projets"
                   aria-label={`Voir plus sur ${project.organization}`}
                   className="grid h-10 w-10 place-items-center bg-white/10 text-2xl text-white transition-colors hover:bg-[#FF1E27]"
                 >
                   ›
-                </a>
+                </Link>
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
@@ -125,6 +122,16 @@ export default function ProjectsSection() {
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/projets#tous-mes-projets"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[1px] text-white transition-colors hover:text-[#FF1E27]"
+          >
+            Voir plus
+            <span aria-hidden="true">&gt;</span>
+          </Link>
         </div>
       </div>
     </section>

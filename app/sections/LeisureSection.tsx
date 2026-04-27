@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 type Leisure = {
+  id: string;
   category: string;
   title: string;
   period: string;
@@ -11,6 +12,7 @@ type Leisure = {
 
 const leisures: Leisure[] = [
   {
+    id: "loisir-musculation",
     category: "Sport",
     title: "Musculation",
     period: "Depuis 2016",
@@ -20,6 +22,7 @@ const leisures: Leisure[] = [
       "Pratique régulière depuis 2016, la musculation m'a appris la discipline, la constance et le goût de l'effort progressif. C'est un repère important dans mon équilibre personnel et une école de rigueur que je retrouve aussi dans mon travail.",
   },
   {
+    id: "loisir-camping",
     category: "Outdoor",
     title: "Camping",
     period: "Plus de 10 campings",
@@ -44,6 +47,7 @@ export default function LeisureSection() {
           {leisures.map((leisure) => (
             <article
               key={`${leisure.title}-${leisure.period}`}
+              id={leisure.id}
               className="overflow-hidden rounded-sm border border-white/10 bg-[#0E0E0E]"
             >
               <div className="grid lg:grid-cols-[1.08fr_1.22fr]">

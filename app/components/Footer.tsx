@@ -1,15 +1,27 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
   return (
     <footer className="mt-auto w-full border-t border-zinc-900/10 bg-zinc-950 px-4 py-10 text-zinc-200 md:px-6">
-      <div className="mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-3">
-        <div className="space-y-3">
-          <p className="text-lg font-semibold tracking-wide text-white">Portfolio Oussema Belhaouene</p>
-          <p className="max-w-xs text-sm leading-relaxed text-zinc-400">
-            Portfolio moderne et epure, à pour but de presenter mes projets avec
-            clarté et impact.
-          </p>
+      <div className="mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex items-start gap-4">
+          <Link href="/" aria-label="Retour à l'accueil" className="shrink-0">
+            <Image
+              src="/images/logo-oussema.png"
+              alt="Logo Oussema"
+              width={96}
+              height={96}
+              className="h-auto w-[76px] object-contain"
+            />
+          </Link>
+          <div className="space-y-3">
+            <p className="text-lg font-semibold tracking-wide text-white">Portfolio Oussema Belhaouene</p>
+            <p className="max-w-xs text-sm leading-relaxed text-zinc-400">
+              Portfolio moderne et epure, à pour but de presenter mes projets avec
+              clarté et impact.
+            </p>
+          </div>
         </div>
 
         <div className="space-y-3 text-sm">
@@ -26,6 +38,21 @@ export default function Footer() {
             </Link>
             <Link href="/contact" className="w-fit transition-colors hover:text-white">
               Contact
+            </Link>
+          </div>
+        </div>
+
+        <div className="space-y-3 text-sm">
+          <p className="font-semibold uppercase tracking-wider text-zinc-300">Services</p>
+          <div className="grid gap-2">
+            <Link href="/services#service-data-analysis" className="w-fit transition-colors hover:text-white">
+              Business intelligence & data
+            </Link>
+            <Link href="/services#service-intelligence-artificielle" className="w-fit transition-colors hover:text-white">
+              Intelligence artificielle
+            </Link>
+            <Link href="/services#service-developpement-web" className="w-fit transition-colors hover:text-white">
+              Développement web
             </Link>
           </div>
         </div>

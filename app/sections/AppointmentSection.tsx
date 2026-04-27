@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AppointmentSection() {
   return (
@@ -21,12 +22,13 @@ export default function AppointmentSection() {
           <p className="mt-6 max-w-5xl text-lg leading-8 text-white/90 md:text-2xl">
             Chaque projet commence par une discussion. Prenons 15 minutes pour échanger sur vos besoins.
           </p>
+          <Link href="/contact">
           <button
             type="button"
             className="mt-14 border border-white bg-transparent px-10 py-4 text-base font-semibold uppercase tracking-[1.4px] text-white transition-colors hover:bg-white hover:text-black"
           >
             Rendez vous
-          </button>
+          </button></Link>
         </div>
       </div>
     </section>

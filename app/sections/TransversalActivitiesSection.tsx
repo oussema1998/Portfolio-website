@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 type Activity = {
+  id: string;
   category: string;
   organization: string;
   title: string;
@@ -14,6 +15,7 @@ type Activity = {
 
 const activities: Activity[] = [
   {
+    id: "activite-president-club",
     category: "Leadership associatif",
     organization: "Coexister Club ESPRIT",
     title: "Président du club",
@@ -28,6 +30,7 @@ const activities: Activity[] = [
     ],
   },
   {
+    id: "activite-maitre-nageur",
     category: "Sécurité et secours",
     organization: "Protection Civile de Bizerte",
     title: "Maître-nageur sauveteur",
@@ -41,6 +44,7 @@ const activities: Activity[] = [
     ],
   },
   {
+    id: "activite-agent-telephonique",
     category: "Relation client",
     organization: "Active Contact",
     title: "Conseiller téléphonique",
@@ -75,6 +79,7 @@ export default function TransversalActivitiesSection() {
           {activities.map((activity) => (
             <article
               key={`${activity.title}-${activity.period}`}
+              id={activity.id}
               className="overflow-hidden rounded-sm border border-white/10 bg-[#0E0E0E]"
             >
               <div className="grid lg:grid-cols-[1.08fr_1.22fr]">

@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     template: "%s | Mon Projet",
   },
   description: "Site portfolio Oussema Belhaouene",
+  icons: {
+    icon: "/images/logo-oussema.png",
+    shortcut: "/images/logo-oussema.png",
+    apple: "/images/logo-oussema.png",
+  },
 };
 
 export default function RootLayout({
