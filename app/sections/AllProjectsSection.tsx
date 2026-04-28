@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { allProjects, type ProjectMedia } from "../data/projects";
+import { getProjectsByLocale, type ProjectMedia } from "../data/projects";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 type ActiveMedia = {
 	projectTitle: string;
@@ -70,7 +71,33 @@ const getMediaPreviewStyle = (media: ProjectMedia): React.CSSProperties | undefi
 };
 
 export default function AllProjectsSection() {
+	const { locale } = useSitePreferences();
+	const isFrench = locale === "fr";
+	const allProjects = getProjectsByLocale(locale);
 	const [activeMedia, setActiveMedia] = useState<ActiveMedia | null>(null);
+	const copy = isFrench
+		? {
+				kicker: "Tous mes projets",
+				title: "Portfolio complet",
+				description:
+					"L'ensemble des projets realises, du freelance aux stages, avec leurs ressources et demonstrations.",
+				mediaLabel: "Medias",
+				openMediaLabel: "Ouvrir le media",
+				openOrgLabel: "Ouvrir",
+				openGithubLabel: "Ouvrir le repository GitHub de",
+				closeLabel: "Fermer la fenetre media",
+		  }
+		: {
+				kicker: "All my projects",
+				title: "Complete portfolio",
+				description:
+					"All completed projects, from freelance to internships, with their resources and demos.",
+				mediaLabel: "Media",
+				openMediaLabel: "Open media",
+				openOrgLabel: "Open",
+				openGithubLabel: "Open GitHub repository for",
+				closeLabel: "Close media window",
+		  };
 
 	const mediaTitle = useMemo(() => {
 		if (!activeMedia) {
@@ -86,12 +113,11 @@ export default function AllProjectsSection() {
 				<div className="mx-auto w-full max-w-[1480px] text-white">
 					<div className="flex flex-col gap-4 text-center md:items-center">
 						<span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-							Tous mes projets
+							{copy.kicker}
 						</span>
-						<h2 className="text-4xl font-semibold md:text-5xl">Portfolio complet</h2>
+						<h2 className="text-4xl font-semibold md:text-5xl">{copy.title}</h2>
 						<p className="mx-auto max-w-4xl text-base leading-8 text-white/80 md:text-lg">
-							L&apos;ensemble des projets realises, du freelance aux stages, avec leurs
-							ressources et demonstrations.
+							{copy.description}
 						</p>
 					</div>
 
@@ -107,7 +133,7 @@ export default function AllProjectsSection() {
 										target="_blank"
 										rel="noreferrer"
 										className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-md border border-zinc-300/40 bg-white/5 transition-colors hover:border-[#FF1E27]/70 hover:bg-[#FF1E27]/10"
-										aria-label={`Ouvrir ${project.organization}`}
+										aria-label={`${copy.openOrgLabel} ${project.organization}`}
 									>
 										<Image
 											src={project.logo}
@@ -142,7 +168,7 @@ export default function AllProjectsSection() {
 								{project.medias.length > 0 ? (
 									<div className="mt-6">
 										<p className="text-sm font-semibold uppercase tracking-[1.2px] text-white/90">
-											Medias
+											{copy.mediaLabel}
 										</p>
 										<div className="mt-3 flex flex-wrap gap-2.5">
 											{project.medias.map((media) => (
@@ -151,7 +177,7 @@ export default function AllProjectsSection() {
 													type="button"
 													onClick={() => setActiveMedia({ projectTitle: project.title, media })}
 													className="group relative overflow-hidden rounded-sm border border-white/20 bg-white/5 transition-colors hover:border-[#FF1E27]/70"
-													aria-label={`Ouvrir le media ${media.label}`}
+													aria-label={`${copy.openMediaLabel} ${media.label}`}
 												>
 													<div className="relative h-16 w-24">
 														{media.type === "image" ? (
@@ -195,6 +221,7 @@ export default function AllProjectsSection() {
 											target="_blank"
 											rel="noreferrer"
 											aria-label={`Ouvrir le repository GitHub de ${project.title}`}
+											aria-label={`${copy.openGithubLabel} ${project.title}`}
 											className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-white/20 bg-white/5 text-white transition-colors hover:border-[#FF1E27]/70 hover:text-[#FF1E27]"
 										>
 											<svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
@@ -231,7 +258,7 @@ export default function AllProjectsSection() {
 								type="button"
 								onClick={() => setActiveMedia(null)}
 								className="grid h-9 w-9 place-items-center rounded-sm border border-white/25 text-lg text-white transition-colors hover:border-[#FF1E27] hover:text-[#FF1E27]"
-								aria-label="Fermer la fenetre media"
+							aria-label={copy.closeLabel}
 							>
 								x
 							</button>
@@ -270,7 +297,7 @@ export default function AllProjectsSection() {
 						type="button"
 						className="absolute inset-0 -z-10"
 						onClick={() => setActiveMedia(null)}
-						aria-label="Fermer la fenetre media"
+						aria-label={copy.closeLabel}
 					/>
 				</div>
 			) : null}

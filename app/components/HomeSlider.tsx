@@ -3,33 +3,57 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
-const slides = [
-  {
-    image: "/images/slider_page_1.jpg",
-    title: "Expertise et réalisations",
-    ctaLabel: "Voir mes projets",
-    ctaHref: "/projets",
-  },
-  {
-    image: "/images/slider_page_2.jpg",
-    title: "Activitées transversales et loisirs",
-    ctaLabel: "Voir mes activités",
-    ctaHref: "/activites",
-  },
-  {
-    image: "/images/slider_page_3.jpg",
-    title: "Découvrez mes services",
-    ctaLabel: "Voir mes services",
-    ctaHref: "/services",
-  },
-];
-
-const slidesLoop = [slides[slides.length - 1], ...slides, slides[0]];
-const firstLoopIndex = 0;
-const lastLoopIndex = slides.length + 1;
+const slidesByLocale = {
+  fr: [
+    {
+      image: "/images/slider_page_1.jpg",
+      title: "Expertise et réalisations",
+      ctaLabel: "Voir mes projets",
+      ctaHref: "/projets",
+    },
+    {
+      image: "/images/slider_page_2.jpg",
+      title: "Activitées transversales et loisirs",
+      ctaLabel: "Voir mes activités",
+      ctaHref: "/activites",
+    },
+    {
+      image: "/images/slider_page_3.jpg",
+      title: "Découvrez mes services",
+      ctaLabel: "Voir mes services",
+      ctaHref: "/services",
+    },
+  ],
+  en: [
+    {
+      image: "/images/slider_page_1.jpg",
+      title: "Expertise and achievements",
+      ctaLabel: "View my projects",
+      ctaHref: "/projets",
+    },
+    {
+      image: "/images/slider_page_2.jpg",
+      title: "Cross-functional activities and hobbies",
+      ctaLabel: "View my activities",
+      ctaHref: "/activites",
+    },
+    {
+      image: "/images/slider_page_3.jpg",
+      title: "Discover my services",
+      ctaLabel: "View my services",
+      ctaHref: "/services",
+    },
+  ],
+} as const;
 
 export default function HomeSlider() {
+  const { locale } = useSitePreferences();
+  const slides = slidesByLocale[locale];
+  const slidesLoop = [slides[slides.length - 1], ...slides, slides[0]];
+  const firstLoopIndex = 0;
+  const lastLoopIndex = slides.length + 1;
   const [currentSlide, setCurrentSlide] = useState(1);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
   const [dragOffset, setDragOffset] = useState(0);
@@ -223,7 +247,7 @@ export default function HomeSlider() {
         <button
           type="button"
           onClick={goToPrevious}
-          aria-label="Image precedente"
+          aria-label={locale === "fr" ? "Image precedente" : "Previous image"}
           className="absolute left-3 top-1/2 grid h-12 w-9 -translate-y-1/2 place-items-center bg-zinc-500/35 text-xl font-semibold text-white backdrop-blur-sm transition hover:bg-zinc-500/55 sm:left-4"
         >
           {"<"}
@@ -232,7 +256,7 @@ export default function HomeSlider() {
         <button
           type="button"
           onClick={goToNext}
-          aria-label="Image suivante"
+          aria-label={locale === "fr" ? "Image suivante" : "Next image"}
           className="absolute right-3 top-1/2 grid h-12 w-9 -translate-y-1/2 place-items-center bg-zinc-500/35 text-xl font-semibold text-white backdrop-blur-sm transition hover:bg-zinc-500/55 sm:right-4"
         >
           {">"}

@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 type Activity = {
   id: string;
@@ -13,65 +16,129 @@ type Activity = {
   detailsUrl?: string;
 };
 
-const activities: Activity[] = [
-  {
-    id: "activite-president-club",
-    category: "Leadership associatif",
-    organization: "Coexister Club ESPRIT",
-    title: "Président du club",
-    period: "10/2022 - 10/2024",
-    image: "/images/activites_transversales/coexister_club.jpeg",
-    logo: "/images/logo_organisations/activites/coexister_club_logo.png",
-    logoFit: "cover",
-    detailsUrl: "https://www.instagram.com/coexister.esprit/",
-    description: [
-      "Pendant mes deux mandats en tant que fondateur et président du Coexister Club à l'ESPRIT, un club universitaire, j'ai eu l'opportunité de bâtir quelque chose d'exceptionnel à partir de zéro. Étant nouvellement arrivé dans l'établissement, j'ai commencé sans connaître personne, mais j'ai rapidement découvert un réseau de personnes ambitieuses et talentueuses avec lesquelles j'ai pu collaborer sur divers projets.",
-      "En tant que président, j'ai dirigé le club dans l'organisation d'événements culturels et sportifs qui ont suscité un grand intérêt et une participation active de la communauté estudiantine. J'ai également eu le privilège de travailler en étroite collaboration avec diverses parties prenantes, notamment des sponsors, l'administration de l'établissement, les enseignants et d'autres clubs. Cette expérience m'a permis de développer des compétences en leadership, en gestion de projet et en travail d'équipe, tout en contribuant de manière significative à la vie étudiante de l'établissement.",
-    ],
-  },
-  {
-    id: "activite-maitre-nageur",
-    category: "Sécurité et secours",
-    organization: "Protection Civile de Bizerte",
-    title: "Maître-nageur sauveteur",
-    period: "Étés 2019 et 2020",
-    image: "/images/activites_transversales/lifeguard.jpg",
-    logo: "/images/logo_organisations/activites/logo_protection_civile.svg",
-    logoFit: "contain",
-    description: [
-      "Au sein de la Protection Civile de Bizerte, j'ai exercé en tant que maître-nageur sauveteur durant les deux saisons d'été 2019 et 2020. Cette expérience m'a placé dans un environnement exigeant, où la vigilance, la rapidité d'analyse et la capacité à garder son sang-froid étaient essentielles au quotidien.",
-      "Au-delà de la surveillance des zones de baignade, cette mission m'a appris à assumer une responsabilité directe vis-à-vis de la sécurité des personnes, à intervenir avec discipline et à travailler en coordination avec les équipes présentes sur le terrain. Elle a renforcé chez moi le sens du devoir, la rigueur et la résilience dans des contextes à forte pression.",
-    ],
-  },
-  {
-    id: "activite-agent-telephonique",
-    category: "Relation client",
-    organization: "Active Contact",
-    title: "Conseiller téléphonique",
-    period: "Été 2022",
-    image: "/images/activites_transversales/active_contact2.png",
-    logo: "/images/logo_organisations/activites/active_contact_logo.png",
-    logoFit: "contain",
-    description: [
-      "Pendant la saison estivale 2022, j'ai occupé le poste de conseiller téléphonique chez Active Contact dans le cadre du service après-vente d'un grand site e-commerce tunisien. Mon rôle consistait à répondre aux demandes des clients, traiter leurs réclamations et apporter des solutions claires, rapides et professionnelles.",
-      "L'objectif hebdomadaire était de maintenir un taux de satisfaction supérieur à 95 %, un niveau que j'ai pu conserver tout au long de cette expérience grâce au travail d'équipe et à une approche centrée sur l'écoute. Cette mission a renforcé mes compétences en communication, en gestion du temps, en résolution de problèmes ainsi que mon sens de l'empathie et de la patience.",
-    ],
-  },
-];
+const activitiesByLocale: Record<"fr" | "en", Activity[]> = {
+  fr: [
+    {
+      id: "activite-president-club",
+      category: "Leadership associatif",
+      organization: "Coexister Club ESPRIT",
+      title: "Président du club",
+      period: "10/2022 - 10/2024",
+      image: "/images/activites_transversales/coexister_club.jpeg",
+      logo: "/images/logo_organisations/activites/coexister_club_logo.png",
+      logoFit: "cover",
+      detailsUrl: "https://www.instagram.com/coexister.esprit/",
+      description: [
+        "Pendant mes deux mandats en tant que fondateur et président du Coexister Club à l'ESPRIT, un club universitaire, j'ai eu l'opportunité de bâtir quelque chose d'exceptionnel à partir de zéro. Étant nouvellement arrivé dans l'établissement, j'ai commencé sans connaître personne, mais j'ai rapidement découvert un réseau de personnes ambitieuses et talentueuses avec lesquelles j'ai pu collaborer sur divers projets.",
+        "En tant que président, j'ai dirigé le club dans l'organisation d'événements culturels et sportifs qui ont suscité un grand intérêt et une participation active de la communauté estudiantine. J'ai également eu le privilège de travailler en étroite collaboration avec diverses parties prenantes, notamment des sponsors, l'administration de l'établissement, les enseignants et d'autres clubs. Cette expérience m'a permis de développer des compétences en leadership, en gestion de projet et en travail d'équipe, tout en contribuant de manière significative à la vie étudiante de l'établissement.",
+      ],
+    },
+    {
+      id: "activite-maitre-nageur",
+      category: "Sécurité et secours",
+      organization: "Protection Civile de Bizerte",
+      title: "Maître-nageur sauveteur",
+      period: "Étés 2019 et 2020",
+      image: "/images/activites_transversales/lifeguard.jpg",
+      logo: "/images/logo_organisations/activites/logo_protection_civile.svg",
+      logoFit: "contain",
+      description: [
+        "Au sein de la Protection Civile de Bizerte, j'ai exercé en tant que maître-nageur sauveteur durant les deux saisons d'été 2019 et 2020. Cette expérience m'a placé dans un environnement exigeant, où la vigilance, la rapidité d'analyse et la capacité à garder son sang-froid étaient essentielles au quotidien.",
+        "Au-delà de la surveillance des zones de baignade, cette mission m'a appris à assumer une responsabilité directe vis-à-vis de la sécurité des personnes, à intervenir avec discipline et à travailler en coordination avec les équipes présentes sur le terrain. Elle a renforcé chez moi le sens du devoir, la rigueur et la résilience dans des contextes à forte pression.",
+      ],
+    },
+    {
+      id: "activite-agent-telephonique",
+      category: "Relation client",
+      organization: "Active Contact",
+      title: "Conseiller téléphonique",
+      period: "Été 2022",
+      image: "/images/activites_transversales/active_contact2.png",
+      logo: "/images/logo_organisations/activites/active_contact_logo.png",
+      logoFit: "contain",
+      description: [
+        "Pendant la saison estivale 2022, j'ai occupé le poste de conseiller téléphonique chez Active Contact dans le cadre du service après-vente d'un grand site e-commerce tunisien. Mon rôle consistait à répondre aux demandes des clients, traiter leurs réclamations et apporter des solutions claires, rapides et professionnelles.",
+        "L'objectif hebdomadaire était de maintenir un taux de satisfaction supérieur à 95 %, un niveau que j'ai pu conserver tout au long de cette expérience grâce au travail d'équipe et à une approche centrée sur l'écoute. Cette mission a renforcé mes compétences en communication, en gestion du temps, en résolution de problèmes ainsi que mon sens de l'empathie et de la patience.",
+      ],
+    },
+  ],
+  en: [
+    {
+      id: "activite-president-club",
+      category: "Community leadership",
+      organization: "Coexister Club ESPRIT",
+      title: "Club president",
+      period: "10/2022 - 10/2024",
+      image: "/images/activites_transversales/coexister_club.jpeg",
+      logo: "/images/logo_organisations/activites/coexister_club_logo.png",
+      logoFit: "cover",
+      detailsUrl: "https://www.instagram.com/coexister.esprit/",
+      description: [
+        "During my two terms as founder and president of the Coexister Club at ESPRIT, a university club, I had the opportunity to build something exceptional from scratch. As a newcomer to the institution, I started without knowing anyone, but quickly discovered a network of ambitious and talented people with whom I could collaborate on various projects.",
+        "As president, I led the club in organizing cultural and sports events that drew strong interest and active participation from the student community. I also had the privilege of working closely with various stakeholders, including sponsors, the administration, instructors, and other clubs. This experience helped me develop leadership, project management, and teamwork skills while making a meaningful contribution to campus life.",
+      ],
+    },
+    {
+      id: "activite-maitre-nageur",
+      category: "Safety and rescue",
+      organization: "Protection Civile de Bizerte",
+      title: "Lifeguard",
+      period: "Summers 2019 and 2020",
+      image: "/images/activites_transversales/lifeguard.jpg",
+      logo: "/images/logo_organisations/activites/logo_protection_civile.svg",
+      logoFit: "contain",
+      description: [
+        "Within the Civil Protection of Bizerte, I worked as a lifeguard during the 2019 and 2020 summer seasons. This experience placed me in a demanding environment where vigilance, quick analysis, and staying calm were essential daily.",
+        "Beyond monitoring swimming areas, this role taught me to assume direct responsibility for people's safety, intervene with discipline, and work in coordination with on-site teams. It strengthened my sense of duty, rigor, and resilience in high-pressure contexts.",
+      ],
+    },
+    {
+      id: "activite-agent-telephonique",
+      category: "Customer relations",
+      organization: "Active Contact",
+      title: "Phone advisor",
+      period: "Summer 2022",
+      image: "/images/activites_transversales/active_contact2.png",
+      logo: "/images/logo_organisations/activites/active_contact_logo.png",
+      logoFit: "contain",
+      description: [
+        "During the summer of 2022, I held the position of phone advisor at Active Contact as part of the after-sales service for a major Tunisian e-commerce site. My role was to answer customer requests, handle complaints, and provide clear, fast, and professional solutions.",
+        "The weekly objective was to maintain a satisfaction rate above 95%, a level I consistently achieved thanks to teamwork and a listening-first approach. This mission strengthened my communication skills, time management, problem solving, as well as empathy and patience.",
+      ],
+    },
+  ],
+};
 
 export default function TransversalActivitiesSection() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+  const activities = activitiesByLocale[locale];
+  const copy = isFrench
+    ? {
+        kicker: "Activités transversales",
+        title: "Parcours associatif et humain",
+        description:
+          "Des expériences construites en dehors du cadre académique, avec un impact concret sur mon leadership, mon sens de l'organisation et ma capacité à mobiliser un collectif.",
+        detailsLabel: "Détails",
+      }
+    : {
+        kicker: "Cross-functional activities",
+        title: "Community and personal journey",
+        description:
+          "Experiences built outside the academic framework, with a tangible impact on my leadership, organizational skills, and ability to mobilize a collective.",
+        detailsLabel: "Details",
+      };
+
   return (
     <section className="w-full bg-[#0A0A0A] px-4 py-18 md:px-8 md:py-20">
       <div className="mx-auto w-full max-w-[1380px] text-white">
         <div className="text-center">
           <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-            Activités transversales
+            {copy.kicker}
           </span>
-          <h2 className="mt-3 text-4xl font-semibold md:text-5xl">Parcours associatif et humain</h2>
+          <h2 className="mt-3 text-4xl font-semibold md:text-5xl">{copy.title}</h2>
           <p className="mx-auto mt-4 max-w-4xl text-base leading-8 text-white/80 md:text-lg">
-            Des expériences construites en dehors du cadre académique, avec un impact
-            concret sur mon leadership, mon sens de l&apos;organisation et ma capacité à
-            mobiliser un collectif.
+            {copy.description}
           </p>
         </div>
 
@@ -152,7 +219,7 @@ export default function TransversalActivitiesSection() {
                             <circle cx="17.4" cy="6.6" r="0.9" fill="currentColor" stroke="none" />
                           </svg>
                         </span>
-                        <span>Détails</span>
+                        <span>{copy.detailsLabel}</span>
                       </a>
                     </div>
                   ) : null}

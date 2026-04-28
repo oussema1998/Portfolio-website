@@ -1,54 +1,114 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
-const featuredProjects = [
-  {
-    title: "Collection et nettoyage de donnees",
-    context: "projet freelance",
-    organization: "@Elyssa-call",
-    duration: "(1 mois)",
-    logo: "/images/logo_organisations/Elyssa_call.png",
-    url: "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
-    tags: ["data cleaning", "web scrapping"],
-    description:
-      "Collecte automatisee de donnees d'infirmiers liberaux en France depuis une source unique, avec gestion des CAPTCHA. Nettoyage, normalisation et structuration des informations afin de fournir une base fiable, exploitable et orientee prospection.",
-  },
-  {
-    title: "Devhotel: Analyse intelligente des offres de sejours",
-    context: "stage fin d'etudes",
-    organization: "@Devoteam",
-    duration: "(6 mois)",
-    logo: "/images/logo_organisations/devoteam.png",
-    url: "https://www.devoteam.com/",
-    tags: ["web scraping", "ETL", "data visualization", "agentic RAG", "machine learning"],
-    description:
-      "Realisation d'une chaine data de bout en bout: collecte et preparation des donnees hotellerie, conception d'un data warehouse, developpement des flux ETL, creation de dashboards Power BI, modeles de prediction, chatbot RAG et application web metier.",
-  },
-  {
-    title: "Assistant FAQ intelligent",
-    context: "projet test technique",
-    organization: "@north human solutions",
-    duration: "(1 mois)",
-    logo: "/images/logo_organisations/north_human.jpg",
-    url: "https://northhumans.ca/en/",
-    tags: ["Web backend", "RAG", "generative AI"],
-    description:
-      "Conception d'un assistant conversationnel intelligent pour e-commerce, capable de repondre aux FAQ a partir d'une base de connaissance, afin d'ameliorer la qualite de reponse et l'experience client.",
-  },
-];
+const featuredProjectsByLocale = {
+  fr: [
+    {
+      title: "Collection et nettoyage de donnees",
+      context: "projet freelance",
+      organization: "@Elyssa-call",
+      duration: "(1 mois)",
+      logo: "/images/logo_organisations/Elyssa_call.png",
+      url: "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
+      tags: ["data cleaning", "web scrapping"],
+      description:
+        "Collecte automatisee de donnees d'infirmiers liberaux en France depuis une source unique, avec gestion des CAPTCHA. Nettoyage, normalisation et structuration des informations afin de fournir une base fiable, exploitable et orientee prospection.",
+    },
+    {
+      title: "Devhotel: Analyse intelligente des offres de sejours",
+      context: "stage fin d'etudes",
+      organization: "@Devoteam",
+      duration: "(6 mois)",
+      logo: "/images/logo_organisations/devoteam.png",
+      url: "https://www.devoteam.com/",
+      tags: ["web scraping", "ETL", "data visualization", "agentic RAG", "machine learning"],
+      description:
+        "Realisation d'une chaine data de bout en bout: collecte et preparation des donnees hotellerie, conception d'un data warehouse, developpement des flux ETL, creation de dashboards Power BI, modeles de prediction, chatbot RAG et application web metier.",
+    },
+    {
+      title: "Assistant FAQ intelligent",
+      context: "projet test technique",
+      organization: "@north human solutions",
+      duration: "(1 mois)",
+      logo: "/images/logo_organisations/north_human.jpg",
+      url: "https://northhumans.ca/en/",
+      tags: ["Web backend", "RAG", "generative AI"],
+      description:
+        "Conception d'un assistant conversationnel intelligent pour e-commerce, capable de repondre aux FAQ a partir d'une base de connaissance, afin d'ameliorer la qualite de reponse et l'experience client.",
+    },
+  ],
+  en: [
+    {
+      title: "Data collection and cleaning",
+      context: "freelance project",
+      organization: "@Elyssa-call",
+      duration: "(1 month)",
+      logo: "/images/logo_organisations/Elyssa_call.png",
+      url: "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
+      tags: ["data cleaning", "web scrapping"],
+      description:
+        "Automated collection of French freelance nurse data from a single source with CAPTCHA handling. Cleaning, normalization, and structuring to deliver a reliable, prospecting-ready dataset.",
+    },
+    {
+      title: "Devhotel: Intelligent analysis of travel offers",
+      context: "final-year internship",
+      organization: "@Devoteam",
+      duration: "(6 months)",
+      logo: "/images/logo_organisations/devoteam.png",
+      url: "https://www.devoteam.com/",
+      tags: ["web scraping", "ETL", "data visualization", "agentic RAG", "machine learning"],
+      description:
+        "End-to-end data chain: hotel data collection and preparation, data warehouse design, ETL flows, Power BI dashboards, prediction models, RAG chatbot, and a business web app.",
+    },
+    {
+      title: "Intelligent FAQ assistant",
+      context: "technical test project",
+      organization: "@north human solutions",
+      duration: "(1 month)",
+      logo: "/images/logo_organisations/north_human.jpg",
+      url: "https://northhumans.ca/en/",
+      tags: ["Web backend", "RAG", "generative AI"],
+      description:
+        "Design of an intelligent conversational assistant for e-commerce, able to answer FAQs from a knowledge base to improve response quality and customer experience.",
+    },
+  ],
+} as const;
 
 export default function ProjectsSection() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+  const featuredProjects = featuredProjectsByLocale[locale];
+  const copy = isFrench
+    ? {
+        kicker: "Mes projets",
+        title: "Projets et missions réalisées",
+        description:
+          "Une selection de realisations orientees impact, alliant data, architecture logicielle et intelligence artificielle.",
+        viewMore: "Voir plus",
+        openLabel: "Ouvrir",
+      }
+    : {
+        kicker: "My projects",
+        title: "Projects and delivered missions",
+        description:
+          "A selection of impact-driven work combining data, software architecture, and artificial intelligence.",
+        viewMore: "See more",
+        openLabel: "Open",
+      };
+
   return (
     <section className="w-full bg-[#151515] px-4 pb-1 pt-18 md:px-8 md:pb-1 md:pt-20">
       <div className="mx-auto w-full max-w-[1480px] text-white">
         <div className="flex flex-col gap-4 text-center md:items-center">
           <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-            Mes projets
+            {copy.kicker}
           </span>
-          <h2 className="text-4xl font-semibold md:text-5xl">Projets et missions réalisées</h2>
+          <h2 className="text-4xl font-semibold md:text-5xl">{copy.title}</h2>
           <p className="mx-auto max-w-4xl text-base leading-8 text-white/80 md:text-lg">
-            Une selection de realisations orientees impact, alliant data, architecture
-            logicielle et intelligence artificielle.
+            {copy.description}
           </p>
         </div>
 
@@ -64,7 +124,7 @@ export default function ProjectsSection() {
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-md border border-zinc-300/40 bg-white/5 transition-colors hover:border-[#FF1E27]/70 hover:bg-[#FF1E27]/10"
-                  aria-label={`Ouvrir ${project.organization}`}
+                  aria-label={`${copy.openLabel} ${project.organization}`}
                 >
                   <Image
                     src={project.logo}
@@ -99,11 +159,11 @@ export default function ProjectsSection() {
                   href="/projets#tous-mes-projets"
                   className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[1.2px] text-white transition-colors group-hover:text-[#FF1E27]"
                 >
-                  Voir plus
+                  {copy.viewMore}
                 </Link>
                 <Link
                   href="/projets#tous-mes-projets"
-                  aria-label={`Voir plus sur ${project.organization}`}
+                  aria-label={`${copy.viewMore} ${project.organization}`}
                   className="grid h-10 w-10 place-items-center bg-white/10 text-2xl text-white transition-colors hover:bg-[#FF1E27]"
                 >
                   ›
@@ -129,7 +189,7 @@ export default function ProjectsSection() {
             href="/projets#tous-mes-projets"
             className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[1px] text-white transition-colors hover:text-[#FF1E27]"
           >
-            Voir plus
+            {copy.viewMore}
             <span aria-hidden="true">&gt;</span>
           </Link>
         </div>

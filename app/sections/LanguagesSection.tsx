@@ -1,3 +1,7 @@
+"use client";
+
+import { useSitePreferences } from "../context/SitePreferencesContext";
+
 type Language = {
 	name: string;
 	level: string;
@@ -5,24 +9,47 @@ type Language = {
 	score: number;
 };
 
-const languages: Language[] = [
-	{ name: "Anglais", level: "Avancée (C1)", scoreLabel: "4.5/5", score: 90 },
-	{ name: "Français", level: "Avancée (C1)", scoreLabel: "4.5/5", score: 90 },
-	{ name: "Arabe", level: "Native", scoreLabel: "5/5", score: 100 },
-];
+const languagesByLocale: Record<"fr" | "en", Language[]> = {
+	fr: [
+		{ name: "Anglais", level: "Avancée (C1)", scoreLabel: "4.5/5", score: 90 },
+		{ name: "Français", level: "Avancée (C1)", scoreLabel: "4.5/5", score: 90 },
+		{ name: "Arabe", level: "Native", scoreLabel: "5/5", score: 100 },
+	],
+	en: [
+		{ name: "English", level: "Advanced (C1)", scoreLabel: "4.5/5", score: 90 },
+		{ name: "French", level: "Advanced (C1)", scoreLabel: "4.5/5", score: 90 },
+		{ name: "Arabic", level: "Native", scoreLabel: "5/5", score: 100 },
+	],
+};
 
 export default function LanguagesSection() {
+	const { locale } = useSitePreferences();
+	const isFrench = locale === "fr";
+	const languages = languagesByLocale[locale];
+	const copy = isFrench
+		? {
+				kicker: "Langues",
+				title: "Communication multilingue",
+				description:
+					"Des niveaux de maîtrise adaptés aux contextes techniques, professionnels et internationaux.",
+		  }
+		: {
+				kicker: "Languages",
+				title: "Multilingual communication",
+				description:
+					"Proficiency levels tailored to technical, professional, and international contexts.",
+		  };
+
 	return (
 		<section className="w-full bg-[#151515] px-4 py-18 md:px-8 md:py-20">
 			<div className="mx-auto w-full max-w-5xl text-white">
 				<div className="text-center">
 					<span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-						Langues
+						{copy.kicker}
 					</span>
-					<h2 className="mt-3 text-4xl font-semibold md:text-5xl">Communication multilingue</h2>
+					<h2 className="mt-3 text-4xl font-semibold md:text-5xl">{copy.title}</h2>
 					<p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-white/80 md:text-lg">
-						Des niveaux de maîtrise adaptés aux contextes techniques, professionnels et
-						internationaux.
+						{copy.description}
 					</p>
 				</div>
 

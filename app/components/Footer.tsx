@@ -1,64 +1,134 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 export default function Footer() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+
+  const navLinks = isFrench
+    ? [
+        { href: "/", label: "Accueil" },
+        { href: "/projets", label: "Projets" },
+        { href: "/services", label: "Services" },
+        { href: "/contact", label: "Contact" },
+      ]
+    : [
+        { href: "/", label: "Home" },
+        { href: "/projets", label: "Projects" },
+        { href: "/services", label: "Services" },
+        { href: "/contact", label: "Contact" },
+      ];
+
+  const serviceLinks = isFrench
+    ? [
+        {
+          href: "/services#service-data-analysis",
+          label: "Business intelligence & data",
+        },
+        {
+          href: "/services#service-intelligence-artificielle",
+          label: "Intelligence artificielle",
+        },
+        {
+          href: "/services#service-developpement-web",
+          label: "Développement web",
+        },
+      ]
+    : [
+        {
+          href: "/services#service-data-analysis",
+          label: "Business intelligence & data",
+        },
+        {
+          href: "/services#service-intelligence-artificielle",
+          label: "Artificial intelligence",
+        },
+        {
+          href: "/services#service-developpement-web",
+          label: "Web development",
+        },
+      ];
+
+  const footerCopy = isFrench
+    ? {
+        homeAria: "Retour à l'accueil",
+        logoAlt: "Logo Oussema",
+        title: "Portfolio Oussema Belhaouene",
+        description:
+          "Portfolio moderne et epure, à pour but de presenter mes projets avec clarté et impact.",
+        navigation: "Navigation",
+        services: "Services",
+        contact: "Contact",
+        emailAria: "Envoyer un email",
+        linkedinAria: "Profil LinkedIn",
+        githubAria: "Profil GitHub",
+        copyright: "Copyright 2026. Tous droits reserves.",
+        palette: "Charte graphique: noir, blanc et rouge #FF1E27",
+      }
+    : {
+        homeAria: "Back to home",
+        logoAlt: "Oussema logo",
+        title: "Oussema Belhaouene portfolio",
+        description:
+          "Modern, minimal portfolio designed to present my projects with clarity and impact.",
+        navigation: "Navigation",
+        services: "Services",
+        contact: "Contact",
+        emailAria: "Send an email",
+        linkedinAria: "LinkedIn profile",
+        githubAria: "GitHub profile",
+        copyright: "Copyright 2026. All rights reserved.",
+        palette: "Brand palette: black, white, and red #FF1E27",
+      };
+
   return (
     <footer className="mt-auto w-full border-t border-zinc-900/10 bg-zinc-950 px-4 py-10 text-zinc-200 md:px-6">
       <div className="mx-auto grid w-full max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-4">
         <div className="flex items-start gap-4">
-          <Link href="/" aria-label="Retour à l'accueil" className="shrink-0">
+          <Link href="/" aria-label={footerCopy.homeAria} className="shrink-0">
             <Image
               src="/images/logo-oussema.png"
-              alt="Logo Oussema"
+              alt={footerCopy.logoAlt}
               width={96}
               height={96}
               className="h-auto w-[76px] object-contain"
             />
           </Link>
           <div className="space-y-3">
-            <p className="text-lg font-semibold tracking-wide text-white">Portfolio Oussema Belhaouene</p>
+            <p className="text-lg font-semibold tracking-wide text-white">{footerCopy.title}</p>
             <p className="max-w-xs text-sm leading-relaxed text-zinc-400">
-              Portfolio moderne et epure, à pour but de presenter mes projets avec
-              clarté et impact.
+              {footerCopy.description}
             </p>
           </div>
         </div>
 
         <div className="space-y-3 text-sm">
-          <p className="font-semibold uppercase tracking-wider text-zinc-300">Navigation</p>
+          <p className="font-semibold uppercase tracking-wider text-zinc-300">{footerCopy.navigation}</p>
           <div className="grid gap-2">
-            <Link href="/" className="w-fit transition-colors hover:text-white">
-              Accueil
-            </Link>
-            <Link href="/projets" className="w-fit transition-colors hover:text-white">
-              Projets
-            </Link>
-            <Link href="/services" className="w-fit transition-colors hover:text-white">
-              Services
-            </Link>
-            <Link href="/contact" className="w-fit transition-colors hover:text-white">
-              Contact
-            </Link>
+            {navLinks.map((item) => (
+              <Link key={item.href} href={item.href} className="w-fit transition-colors hover:text-white">
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
 
         <div className="space-y-3 text-sm">
-          <p className="font-semibold uppercase tracking-wider text-zinc-300">Services</p>
+          <p className="font-semibold uppercase tracking-wider text-zinc-300">{footerCopy.services}</p>
           <div className="grid gap-2">
-            <Link href="/services#service-data-analysis" className="w-fit transition-colors hover:text-white">
-              Business intelligence & data
-            </Link>
-            <Link href="/services#service-intelligence-artificielle" className="w-fit transition-colors hover:text-white">
-              Intelligence artificielle
-            </Link>
-            <Link href="/services#service-developpement-web" className="w-fit transition-colors hover:text-white">
-              Développement web
-            </Link>
+            {serviceLinks.map((item) => (
+              <Link key={item.href} href={item.href} className="w-fit transition-colors hover:text-white">
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
 
         <div className="space-y-3 text-sm">
-          <p className="font-semibold uppercase tracking-wider text-zinc-300">Contact</p>
+          <p className="font-semibold uppercase tracking-wider text-zinc-300">{footerCopy.contact}</p>
           <a
             href="mailto:belhaouene.oussema@esprit.tn"
             className="text-zinc-400 transition-colors hover:text-white"
@@ -75,7 +145,7 @@ export default function Footer() {
           <div className="flex items-center gap-4 pt-1">
             <a
               href="mailto:belhaouene.oussema@esprit.tn"
-              aria-label="Envoyer un email"
+              aria-label={footerCopy.emailAria}
               className="text-zinc-300 transition-colors hover:text-[#FF1E27]"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
@@ -86,7 +156,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/oussema-belhou%C3%A9ne-710089224/"
               target="_blank"
               rel="noreferrer"
-              aria-label="Profil LinkedIn"
+              aria-label={footerCopy.linkedinAria}
               className="text-zinc-300 transition-colors hover:text-[#FF1E27]"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
@@ -97,7 +167,7 @@ export default function Footer() {
               href="https://github.com/oussema1998"
               target="_blank"
               rel="noreferrer"
-              aria-label="Profil GitHub"
+              aria-label={footerCopy.githubAria}
               className="text-zinc-300 transition-colors hover:text-[#FF1E27]"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
@@ -109,8 +179,8 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-8 flex w-full max-w-6xl flex-col gap-3 border-t border-white/10 pt-6 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-        <p>Copyright 2026. Tous droits reserves.</p>
-        <p>Charte graphique: noir, blanc et rouge #FF1E27</p>
+        <p>{footerCopy.copyright}</p>
+        <p>{footerCopy.palette}</p>
       </div>
     </footer>
   );

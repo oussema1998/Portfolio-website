@@ -2,56 +2,116 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
-const testimonials = [
-  {
-    name: "Farid Khouani",
-    role: "PDG",
-    organization: "@Elyssa-call",
-    organizationUrl:
-      "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
-    image: "/images/temoignages/farid_khouani.png",
-    rating: 5,
-    quote:
-      "J'ai eu l'opportunité de collaborer avec Oussema sur un projet. Il a fourni un travail de grande qualité tout en respectant les délais fixés.",
-  },
-  {
-    name: "Yosra Makhlouf",
-    role: "Ingénieure en informatique",
-    organization: "@BVMT",
-    organizationUrl: "https://www.linkedin.com/company/tunisstockexchange/",
-    image: "/images/temoignages/yosra_makhlouf.png",
-    rating: 5,
-    quote:
-      "J'ai encadré Oussema durant son stage en data. Il s'est distingué par son sérieux, sa discipline et son engagement tout au long de la mission. Bonne continuation à lui.",
-  },
-  {
-    name: "Safouene Zouari",
-    role: "Enseignant",
-    organization: "@ESPRIT",
-    organizationUrl: "https://www.esprit.tn/",
-    image: "/images/temoignages/safouene_zouari.png",
-    rating: 5,
-    quote:
-      "Oussema est un étudiant ambitieux, bien organisé et rigoureux. Il se distingue par son dynamisme et son professionnalisme.",
-  },
-  {
-    name: "Zied Saidi",
-    role: "Responsable vie scolaire",
-    organization: "@ESPRIT",
-    organizationUrl: "https://www.esprit.tn/",
-    image: "/images/temoignages/zied_saidi.png",
-    rating: 4.5,
-    quote:
-      "J’ai eu l’occasion de collaborer avec Oussema lors de l’organisation de plusieurs événements, alors qu’il occupait le poste de président d’un club à ESPRIT. Il s’est distingué par son dynamisme, son sens de l’initiative et son engagement.",
-  },
-];
-
-const testimonialsLoop = [testimonials[testimonials.length - 1], ...testimonials, testimonials[0]];
-const firstLoopIndex = 0;
-const lastLoopIndex = testimonials.length + 1;
+const testimonialsByLocale = {
+  fr: [
+    {
+      name: "Farid Khouani",
+      role: "PDG",
+      organization: "@Elyssa-call",
+      organizationUrl:
+        "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
+      image: "/images/temoignages/farid_khouani.png",
+      rating: 5,
+      quote:
+        "J'ai eu l'opportunité de collaborer avec Oussema sur un projet. Il a fourni un travail de grande qualité tout en respectant les délais fixés.",
+    },
+    {
+      name: "Yosra Makhlouf",
+      role: "Ingénieure en informatique",
+      organization: "@BVMT",
+      organizationUrl: "https://www.linkedin.com/company/tunisstockexchange/",
+      image: "/images/temoignages/yosra_makhlouf.png",
+      rating: 5,
+      quote:
+        "J'ai encadré Oussema durant son stage en data. Il s'est distingué par son sérieux, sa discipline et son engagement tout au long de la mission. Bonne continuation à lui.",
+    },
+    {
+      name: "Safouene Zouari",
+      role: "Enseignant",
+      organization: "@ESPRIT",
+      organizationUrl: "https://www.esprit.tn/",
+      image: "/images/temoignages/safouene_zouari.png",
+      rating: 5,
+      quote:
+        "Oussema est un étudiant ambitieux, bien organisé et rigoureux. Il se distingue par son dynamisme et son professionnalisme.",
+    },
+    {
+      name: "Zied Saidi",
+      role: "Responsable vie scolaire",
+      organization: "@ESPRIT",
+      organizationUrl: "https://www.esprit.tn/",
+      image: "/images/temoignages/zied_saidi.png",
+      rating: 4.5,
+      quote:
+        "J’ai eu l’occasion de collaborer avec Oussema lors de l’organisation de plusieurs événements, alors qu’il occupait le poste de président d’un club à ESPRIT. Il s’est distingué par son dynamisme, son sens de l’initiative et son engagement.",
+    },
+  ],
+  en: [
+    {
+      name: "Farid Khouani",
+      role: "CEO",
+      organization: "@Elyssa-call",
+      organizationUrl:
+        "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
+      image: "/images/temoignages/farid_khouani.png",
+      rating: 5,
+      quote:
+        "I had the opportunity to collaborate with Oussema on a project. He delivered high-quality work while meeting the set deadlines.",
+    },
+    {
+      name: "Yosra Makhlouf",
+      role: "Software engineer",
+      organization: "@BVMT",
+      organizationUrl: "https://www.linkedin.com/company/tunisstockexchange/",
+      image: "/images/temoignages/yosra_makhlouf.png",
+      rating: 5,
+      quote:
+        "I supervised Oussema during his data internship. He stood out for his seriousness, discipline, and commitment throughout the mission. Wishing him all the best.",
+    },
+    {
+      name: "Safouene Zouari",
+      role: "Instructor",
+      organization: "@ESPRIT",
+      organizationUrl: "https://www.esprit.tn/",
+      image: "/images/temoignages/safouene_zouari.png",
+      rating: 5,
+      quote:
+        "Oussema is an ambitious, well-organized, and rigorous student. He stands out for his dynamism and professionalism.",
+    },
+    {
+      name: "Zied Saidi",
+      role: "Student life manager",
+      organization: "@ESPRIT",
+      organizationUrl: "https://www.esprit.tn/",
+      image: "/images/temoignages/zied_saidi.png",
+      rating: 4.5,
+      quote:
+        "I had the opportunity to collaborate with Oussema in organizing several events when he was president of a club at ESPRIT. He stood out for his dynamism, initiative, and commitment.",
+    },
+  ],
+} as const;
 
 export default function TestimonialsSection() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+  const testimonials = testimonialsByLocale[locale];
+  const testimonialsLoop = [testimonials[testimonials.length - 1], ...testimonials, testimonials[0]];
+  const firstLoopIndex = 0;
+  const lastLoopIndex = testimonials.length + 1;
+  const copy = isFrench
+    ? {
+        kicker: "Témoignages",
+        title: "Témoignages et recommandations",
+        ratingLabel: "étoiles sur 5",
+      }
+    : {
+        kicker: "Testimonials",
+        title: "Testimonials and recommendations",
+        ratingLabel: "stars out of 5",
+      };
+
   const [activeTestimonialIndex, setActiveTestimonialIndex] = useState(1);
   const [isTestimonialTransitionEnabled, setIsTestimonialTransitionEnabled] = useState(true);
   const [testimonialDragOffset, setTestimonialDragOffset] = useState(0);
@@ -189,9 +249,9 @@ export default function TestimonialsSection() {
       <div className="mx-auto w-full max-w-[1480px] text-white">
         <div className="flex flex-col gap-4 text-center md:items-center">
           <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-            Témoignages
+            {copy.kicker}
           </span>
-          <h2 className="text-4xl font-semibold md:text-5xl">Témoignages et recommandations</h2>
+          <h2 className="text-4xl font-semibold md:text-5xl">{copy.title}</h2>
         </div>
 
         <div className="mx-auto mt-12 max-w-3xl">
@@ -251,7 +311,7 @@ export default function TestimonialsSection() {
 
                   <div
                     className="mt-5 flex items-center gap-1"
-                    aria-label={`${testimonial.rating} étoiles sur 5`}
+                    aria-label={`${testimonial.rating} ${copy.ratingLabel}`}
                   >
                     {Array.from({ length: 5 }).map((_, index) => {
                       const starValue = index + 1;

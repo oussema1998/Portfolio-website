@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import ContactForm from "./ContactForm";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
-export const metadata: Metadata = {
-  title: "Contact",
-};
+// metadata export removed — "use client" components can't export metadata.
+// Move metadata to a parent layout or a separate generateMetadata export if needed.
 
-const contactDetails = [
+const contactDetails = (isFrench: boolean) => [
   {
-    label: "Email",
+    label: isFrench ? "Email" : "Email",
     value: "belhaouene.oussema@esprit.tn",
     href: "mailto:belhaouene.oussema@esprit.tn",
     icon: (
@@ -19,7 +20,7 @@ const contactDetails = [
     ),
   },
   {
-    label: "Téléphone",
+    label: isFrench ? "Téléphone" : "Phone",
     value: "+216 92 073 061",
     href: "tel:+21692073061",
     icon: (
@@ -39,8 +40,8 @@ const contactDetails = [
     ),
   },
   {
-    label: "Localisation",
-    value: "Tunisie",
+    label: isFrench ? "Localisation" : "Location",
+    value: isFrench ? "Tunisie" : "Tunisia",
     href: "https://www.google.com/maps/place/Tunisia",
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current" strokeWidth="1.8" aria-hidden="true">
@@ -52,13 +53,48 @@ const contactDetails = [
 ];
 
 export default function ContactPage() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+
+  const strings = isFrench
+    ? {
+        breadcrumbHome: "Accueil",
+        breadcrumbCurrent: "Contact",
+        bannerAlt: "Bannière Contact",
+        sectionTagContact: "Contact",
+        heading: "Parlons de votre projet",
+        description:
+          "Que ce soit pour une mission data, un besoin en analyse, une solution IA ou une application web, je peux vous aider à cadrer, concevoir et faire avancer votre projet.",
+        formTag: "Formulaire",
+        formHeading: "Envoyer un message",
+        mapTag: "Localisation",
+        mapHeading: "Tunisie",
+        mapTitle: "Carte de la Tunisie",
+      }
+    : {
+        breadcrumbHome: "Home",
+        breadcrumbCurrent: "Contact",
+        bannerAlt: "Contact Banner",
+        sectionTagContact: "Contact",
+        heading: "Let's talk about your project",
+        description:
+          "Whether it's a data mission, an analytics need, an AI solution, or a web application, I can help you scope, design, and move your project forward.",
+        formTag: "Form",
+        formHeading: "Send a message",
+        mapTag: "Location",
+        mapHeading: "Tunisia",
+        mapTitle: "Map of Tunisia",
+      };
+
+  const details = contactDetails(isFrench);
+
   return (
     <>
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[44vh] min-h-[320px] w-full md:h-[50vh] md:min-h-[380px]">
           <Image
             src="/images/rendez_vous_4.png"
-            alt="Bannière Contact"
+            alt={strings.bannerAlt}
             fill
             priority
             sizes="100vw"
@@ -68,14 +104,14 @@ export default function ContactPage() {
 
           <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl items-center justify-center px-6 text-center text-white">
             <nav
-              aria-label="Fil d'ariane"
+              aria-label={isFrench ? "Fil d'ariane" : "Breadcrumb"}
               className="text-sm font-semibold uppercase tracking-[1.5px] md:text-base"
             >
               <Link href="/" className="text-white/85 transition-colors hover:text-[#FF1E27]">
-                Accueil
+                {strings.breadcrumbHome}
               </Link>
               <span className="mx-2 text-white/55">&gt;</span>
-              <span className="text-[#FF1E27]">Contact</span>
+              <span className="text-[#FF1E27]">{strings.breadcrumbCurrent}</span>
             </nav>
           </div>
         </div>
@@ -85,17 +121,15 @@ export default function ContactPage() {
         <div className="mx-auto grid w-full max-w-[1480px] gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="rounded-sm border border-white/10 bg-[#0E0E0E] px-6 py-7 text-white md:px-8 md:py-9">
             <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-              Contact
+              {strings.sectionTagContact}
             </span>
-            <h1 className="mt-3 text-4xl font-semibold md:text-5xl">Parlons de votre projet</h1>
+            <h1 className="mt-3 text-4xl font-semibold md:text-5xl">{strings.heading}</h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-white/80 md:text-lg">
-              Que ce soit pour une mission data, un besoin en analyse, une solution IA
-              ou une application web, je peux vous aider à cadrer, concevoir et faire
-              avancer votre projet.
+              {strings.description}
             </p>
 
             <div className="mt-10 space-y-4">
-              {contactDetails.map((item) => (
+              {details.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
@@ -123,9 +157,9 @@ export default function ContactPage() {
             <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
               <div>
                 <span className="block text-sm font-bold uppercase tracking-[1.8px] text-[#FF1E27]">
-                  Formulaire
+                  {strings.formTag}
                 </span>
-                <h2 className="mt-2 text-3xl font-semibold md:text-4xl">Envoyer un message</h2>
+                <h2 className="mt-2 text-3xl font-semibold md:text-4xl">{strings.formHeading}</h2>
               </div>
             </div>
 
@@ -138,14 +172,14 @@ export default function ContactPage() {
         <div className="mx-auto w-full max-w-[1480px] overflow-hidden rounded-sm border border-white/10 bg-[#0E0E0E] text-white">
           <div className="border-b border-white/10 px-6 py-6 md:px-8">
             <span className="block text-sm font-bold uppercase tracking-[1.8px] text-[#FF1E27]">
-              Localisation
+              {strings.mapTag}
             </span>
-            <h2 className="mt-2 text-3xl font-semibold md:text-4xl">Tunisie</h2>
+            <h2 className="mt-2 text-3xl font-semibold md:text-4xl">{strings.mapHeading}</h2>
           </div>
 
           <div className="h-[360px] w-full md:h-[460px]">
             <iframe
-              title="Carte de la Tunisie"
+              title={strings.mapTitle}
               src="https://www.google.com/maps?q=Tunisia&z=6&output=embed"
               className="h-full w-full border-0"
               loading="lazy"

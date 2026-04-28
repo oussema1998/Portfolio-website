@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 type Technology = {
 	name: string;
@@ -38,17 +41,32 @@ const technologies: Technology[] = [
 ];
 
 export default function TechnologiesShowcaseSection() {
+	const { locale } = useSitePreferences();
+	const isFrench = locale === "fr";
+	const copy = isFrench
+		? {
+				kicker: "Technologies",
+				title: "Stack data, backend et IA",
+				description:
+					"Un socle technique polyvalent, mobilisé pour concevoir des solutions performantes, robustes et orientées impact.",
+		  }
+		: {
+				kicker: "Technologies",
+				title: "Data, backend, and AI stack",
+				description:
+					"A versatile technical foundation used to design high-performing, robust, and impact-driven solutions.",
+		  };
+
 	return (
 		<section id="mes-competences" className="w-full scroll-mt-28 bg-[#0A0A0A] px-4 py-18 md:px-8 md:py-20">
 			<div className="mx-auto w-full max-w-[1480px] text-white">
 				<div className="text-center">
 					<span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-						Technologies
+						{copy.kicker}
 					</span>
-					<h2 className="mt-3 text-4xl font-semibold md:text-5xl">Stack data, backend et IA</h2>
+					<h2 className="mt-3 text-4xl font-semibold md:text-5xl">{copy.title}</h2>
 					<p className="mx-auto mt-4 max-w-4xl text-base leading-8 text-white/80 md:text-lg">
-						Un socle technique polyvalent, mobilisé pour concevoir des solutions
-						performantes, robustes et orientées impact.
+						{copy.description}
 					</p>
 				</div>
 

@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 type Leisure = {
   id: string;
@@ -10,37 +13,67 @@ type Leisure = {
   imageClassName?: string;
 };
 
-const leisures: Leisure[] = [
-  {
-    id: "loisir-musculation",
-    category: "Sport",
-    title: "Musculation",
-    period: "Depuis 2016",
-    image: "/images/activites_transversales/musculation.jpg",
-    imageClassName: "object-cover object-[center_15%]",
-    description:
-      "Pratique régulière depuis 2016, la musculation m'a appris la discipline, la constance et le goût de l'effort progressif. C'est un repère important dans mon équilibre personnel et une école de rigueur que je retrouve aussi dans mon travail.",
-  },
-  {
-    id: "loisir-camping",
-    category: "Outdoor",
-    title: "Camping",
-    period: "Plus de 10 campings",
-    image: "/images/activites_transversales/camping.jpg",
-    description:
-      "Le camping occupe une place particulière dans mes loisirs. Il nourrit mon goût pour l'aventure, l'autonomie et la vie en groupe, tout en renforçant mon sens de l'adaptation, de l'organisation et du partage.",
-  },
-];
+const leisuresByLocale: Record<"fr" | "en", Leisure[]> = {
+  fr: [
+    {
+      id: "loisir-musculation",
+      category: "Sport",
+      title: "Musculation",
+      period: "Depuis 2016",
+      image: "/images/activites_transversales/musculation.jpg",
+      imageClassName: "object-cover object-[center_15%]",
+      description:
+        "Pratique régulière depuis 2016, la musculation m'a appris la discipline, la constance et le goût de l'effort progressif. C'est un repère important dans mon équilibre personnel et une école de rigueur que je retrouve aussi dans mon travail.",
+    },
+    {
+      id: "loisir-camping",
+      category: "Outdoor",
+      title: "Camping",
+      period: "Plus de 10 campings",
+      image: "/images/activites_transversales/camping.jpg",
+      description:
+        "Le camping occupe une place particulière dans mes loisirs. Il nourrit mon goût pour l'aventure, l'autonomie et la vie en groupe, tout en renforçant mon sens de l'adaptation, de l'organisation et du partage.",
+    },
+  ],
+  en: [
+    {
+      id: "loisir-musculation",
+      category: "Sport",
+      title: "Strength training",
+      period: "Since 2016",
+      image: "/images/activites_transversales/musculation.jpg",
+      imageClassName: "object-cover object-[center_15%]",
+      description:
+        "Practiced regularly since 2016, strength training has taught me discipline, consistency, and the value of progressive effort. It is an important anchor in my personal balance and a school of rigor that I also apply in my work.",
+    },
+    {
+      id: "loisir-camping",
+      category: "Outdoor",
+      title: "Camping",
+      period: "More than 10 trips",
+      image: "/images/activites_transversales/camping.jpg",
+      description:
+        "Camping holds a special place in my hobbies. It fuels my taste for adventure, autonomy, and group life, while strengthening my adaptability, organization, and sense of sharing.",
+    },
+  ],
+};
 
 export default function LeisureSection() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+  const leisures = leisuresByLocale[locale];
+  const copy = isFrench
+    ? { kicker: "Loisirs", title: "Équilibre, énergie et plein air" }
+    : { kicker: "Hobbies", title: "Balance, energy, and outdoors" };
+
   return (
     <section className="w-full bg-[#151515] px-4 pb-20 pt-4 md:px-8 md:pb-24 md:pt-6">
       <div className="mx-auto w-full max-w-[1380px] text-white">
         <div className="text-center">
           <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-            Loisirs
+            {copy.kicker}
           </span>
-          <h2 className="mt-3 text-4xl font-semibold md:text-5xl">Équilibre, énergie et plein air</h2>
+          <h2 className="mt-3 text-4xl font-semibold md:text-5xl">{copy.title}</h2>
         </div>
 
         <div className="mt-14 space-y-8">

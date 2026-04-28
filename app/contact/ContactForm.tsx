@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 type FormState = {
   nom: string;
@@ -26,9 +27,70 @@ const initialState: FormState = {
 };
 
 export default function ContactForm() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
   const [form, setForm] = useState<FormState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alert, setAlert] = useState<AlertState | null>(null);
+
+  const strings = isFrench
+    ? {
+        fullName: "Nom complet",
+        fullNamePlaceholder: "Votre nom",
+        email: "Email",
+        emailPlaceholder: "votre@email.com",
+        phone: "Téléphone",
+        needType: "Type de besoin",
+        needPlaceholder: "Sélectionner",
+        needOptions: [
+          "Architecture data",
+          "Analyse & reporting",
+          "Intelligence artificielle",
+          "Développement web",
+          "Autre",
+        ],
+        subject: "Sujet",
+        subjectPlaceholder: "Objet de votre demande",
+        message: "Message",
+        messagePlaceholder: "Décrivez votre besoin, votre contexte et vos objectifs.",
+        submitting: "Envoi en cours...",
+        submit: "Envoyer la demande",
+        error: "Erreur lors de l'envoi du formulaire.",
+        success:
+          "Email envoyé avec succès. Vous recevrez une réponse dans environ 24 heures.",
+        fallbackError:
+          "Impossible d'envoyer le formulaire pour le moment. Merci de réessayer.",
+      }
+    : {
+        fullName: "Full name",
+        fullNamePlaceholder: "Your name",
+        email: "Email",
+        emailPlaceholder: "your@email.com",
+        phone: "Phone",
+        needType: "Type of need",
+        needPlaceholder: "Select",
+        needOptions: [
+          "Data architecture",
+          "Analytics & reporting",
+          "Artificial intelligence",
+          "Web development",
+          "Other",
+        ],
+        subject: "Subject",
+        subjectPlaceholder: "Subject of your request",
+        message: "Message",
+        messagePlaceholder: "Describe your need, your context, and your goals.",
+        submitting: "Sending...",
+        submit: "Send request",
+        error: "Error sending the form.",
+        success: "Message sent successfully. You'll receive a response within about 24 hours.",
+        fallbackError: "Unable to send the form right now. Please try again.",
+      };
+
+  const rateLimitMessage = (minutes: number) =>
+    isFrench
+      ? `Trop de tentatives détectées. Merci d'attendre environ ${minutes} minute(s) avant de réessayer.`
+      : `Too many attempts detected. Please wait about ${minutes} minute(s) before trying again.`;
 
   const alertClassName = useMemo(() => {
     if (!alert) return "";
@@ -57,7 +119,7 @@ export default function ContactForm() {
         const waitMinutes = data.retryAfter ? Math.ceil(data.retryAfter / 60) : 10;
         setAlert({
           type: "rate-limit",
-          message: `Trop de tentatives détectées. Merci d'attendre environ ${waitMinutes} minute(s) avant de réessayer.`,
+          message: rateLimitMessage(waitMinutes),
         });
         return;
       }
@@ -65,20 +127,20 @@ export default function ContactForm() {
       if (!response.ok) {
         setAlert({
           type: "error",
-          message: data.message ?? "Erreur lors de l'envoi du formulaire.",
+          message: data.message ?? strings.error,
         });
         return;
       }
 
       setAlert({
         type: "success",
-        message: "Email envoyé avec succès. Vous recevrez une réponse dans environ 24 heures.",
+        message: strings.success,
       });
       setForm(initialState);
     } catch {
       setAlert({
         type: "error",
-        message: "Impossible d'envoyer le formulaire pour le moment. Merci de réessayer.",
+        message: strings.fallbackError,
       });
     } finally {
       setIsSubmitting(false);
@@ -99,27 +161,27 @@ export default function ContactForm() {
       <form className="mt-8 grid gap-5" onSubmit={handleSubmit}>
         <div className="grid gap-5 md:grid-cols-2">
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-white/82">Nom complet</span>
+            <span className="text-sm font-medium text-white/82">{strings.fullName}</span>
             <input
               type="text"
               name="nom"
               value={form.nom}
               required
               onChange={(event) => setForm((prev) => ({ ...prev, nom: event.target.value }))}
-              placeholder="Votre nom"
+              placeholder={strings.fullNamePlaceholder}
               className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
             />
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-white/82">Email</span>
+            <span className="text-sm font-medium text-white/82">{strings.email}</span>
             <input
               type="email"
               name="email"
               value={form.email}
               required
               onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-              placeholder="votre@email.com"
+              placeholder={strings.emailPlaceholder}
               className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
             />
           </label>
@@ -127,7 +189,7 @@ export default function ContactForm() {
 
         <div className="grid gap-5 md:grid-cols-2">
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-white/82">Téléphone</span>
+            <span className="text-sm font-medium text-white/82">{strings.phone}</span>
             <input
               type="tel"
               name="telephone"
@@ -139,45 +201,43 @@ export default function ContactForm() {
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-white/82">Type de besoin</span>
+            <span className="text-sm font-medium text-white/82">{strings.needType}</span>
             <select
               name="besoin"
               value={form.besoin}
               onChange={(event) => setForm((prev) => ({ ...prev, besoin: event.target.value }))}
               className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors focus:border-[#FF1E27]/70"
             >
-              <option value="">Sélectionner</option>
-              <option>Architecture data</option>
-              <option>Analyse & reporting</option>
-              <option>Intelligence artificielle</option>
-              <option>Développement web</option>
-              <option>Autre</option>
+              <option value="">{strings.needPlaceholder}</option>
+              {strings.needOptions.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
             </select>
           </label>
         </div>
 
         <label className="grid gap-2">
-          <span className="text-sm font-medium text-white/82">Sujet</span>
+          <span className="text-sm font-medium text-white/82">{strings.subject}</span>
           <input
             type="text"
             name="sujet"
             value={form.sujet}
             required
             onChange={(event) => setForm((prev) => ({ ...prev, sujet: event.target.value }))}
-            placeholder="Objet de votre demande"
+            placeholder={strings.subjectPlaceholder}
             className="h-12 rounded-sm border border-white/12 bg-[#0E0E0E] px-4 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
           />
         </label>
 
         <label className="grid gap-2">
-          <span className="text-sm font-medium text-white/82">Message</span>
+          <span className="text-sm font-medium text-white/82">{strings.message}</span>
           <textarea
             name="message"
             rows={7}
             value={form.message}
             required
             onChange={(event) => setForm((prev) => ({ ...prev, message: event.target.value }))}
-            placeholder="Décrivez votre besoin, votre contexte et vos objectifs."
+            placeholder={strings.messagePlaceholder}
             className="rounded-sm border border-white/12 bg-[#0E0E0E] px-4 py-3 text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#FF1E27]/70"
           />
         </label>
@@ -188,7 +248,7 @@ export default function ContactForm() {
             disabled={isSubmitting}
             className="inline-flex h-12 items-center justify-center rounded-sm bg-[#FF1E27] px-8 text-sm font-semibold uppercase tracking-[1.3px] text-white transition-colors hover:bg-[#ff3e46] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isSubmitting ? "Envoi en cours..." : "Envoyer la demande"}
+            {isSubmitting ? strings.submitting : strings.submit}
           </button>
         </div>
       </form>

@@ -1,13 +1,48 @@
+"use client";
+
 import Link from "next/link";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 export default function DomainsSection() {
+  const { locale } = useSitePreferences();
+  const isFrench = locale === "fr";
+  const copy = isFrench
+    ? {
+        kicker: "Mes domaines",
+        title: "Construire, analyser et innover",
+        webTitle: "Développement web",
+        webDescription:
+          "Création d'applications web modernes, performantes et responsives, avec une architecture claire orientée qualité et expérience utilisateur.",
+        dataTitle: "Data analytics",
+        dataDescription:
+          "Analyse des données, suivi des KPI et visualisation métier pour transformer les données brutes en décisions concrètes.",
+        aiTitle: "Intelligence artificielle",
+        aiDescription:
+          "Développement de solutions IA et modèles prédictifs pour automatiser, anticiper et améliorer la performance des processus métiers.",
+        linkLabel: "Ce que je propose",
+      }
+    : {
+        kicker: "My domains",
+        title: "Build, analyze, and innovate",
+        webTitle: "Web development",
+        webDescription:
+          "Building modern, high-performance, and responsive web applications with a clear architecture focused on quality and user experience.",
+        dataTitle: "Data analytics",
+        dataDescription:
+          "Data analysis, KPI tracking, and business visualization to turn raw data into concrete decisions.",
+        aiTitle: "Artificial intelligence",
+        aiDescription:
+          "Developing AI solutions and predictive models to automate, anticipate, and improve business process performance.",
+        linkLabel: "What I offer",
+      };
+
   return (
     <section className="w-full bg-[#0A0A0A] px-4 pb-1 pt-20 md:px-8 md:pb-1 md:pt-24">
       <div className="mx-auto w-full max-w-none text-center text-white">
         <span className="block text-xl font-bold uppercase tracking-[2.2px] text-[#FF1E27] md:text-2xl">
-          Mes domaines
+          {copy.kicker}
         </span>
-        <h2 className="mt-3 text-4xl font-semibold md:text-5xl">Construire, analyser et innover</h2>
+        <h2 className="mt-3 text-4xl font-semibold md:text-5xl">{copy.title}</h2>
 
         <div className="mt-14 grid gap-8 md:grid-cols-3">
           <article className="px-3">
@@ -18,10 +53,9 @@ export default function DomainsSection() {
                 <path d="M10 16v3m4-3v3" />
               </svg>
             </div>
-            <h3 className="mt-6 text-2xl font-semibold text-white">Développement web</h3>
+            <h3 className="mt-6 text-2xl font-semibold text-white">{copy.webTitle}</h3>
             <p className="mx-auto mt-4 max-w-sm text-[15px] leading-7 text-white/80">
-              Création d&apos;applications web modernes, performantes et responsives,
-              avec une architecture claire orientée qualité et expérience utilisateur.
+              {copy.webDescription}
             </p>
           </article>
 
@@ -34,10 +68,9 @@ export default function DomainsSection() {
                 <path d="M22 19V3" />
               </svg>
             </div>
-            <h3 className="mt-6 text-2xl font-semibold text-white">Data analytics</h3>
+            <h3 className="mt-6 text-2xl font-semibold text-white">{copy.dataTitle}</h3>
             <p className="mx-auto mt-4 max-w-sm text-[15px] leading-7 text-white/80">
-              Analyse des données, suivi des KPI et visualisation métier pour
-              transformer les données brutes en décisions concrètes.
+              {copy.dataDescription}
             </p>
           </article>
 
@@ -50,10 +83,9 @@ export default function DomainsSection() {
                 <circle cx="19" cy="9" r="1.5" />
               </svg>
             </div>
-            <h3 className="mt-6 text-2xl font-semibold text-white">Intelligence artificielle</h3>
+            <h3 className="mt-6 text-2xl font-semibold text-white">{copy.aiTitle}</h3>
             <p className="mx-auto mt-4 max-w-sm text-[15px] leading-7 text-white/80">
-              Développement de solutions IA et modèles prédictifs pour automatiser,
-              anticiper et améliorer la performance des processus métiers.
+              {copy.aiDescription}
             </p>
           </article>
         </div>
@@ -63,7 +95,7 @@ export default function DomainsSection() {
             href="/services#mes-services"
             className="inline-flex items-center gap-1.5 text-sm font-semibold uppercase tracking-[1px] text-white transition-colors hover:text-[#FF1E27]"
           >
-            Ce que je propose
+            {copy.linkLabel}
             <span aria-hidden="true">&gt;</span>
           </Link>
         </div>

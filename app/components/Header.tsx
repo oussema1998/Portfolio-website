@@ -3,17 +3,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSitePreferences } from "../context/SitePreferencesContext";
 
 export default function Header() {
   const pathname = usePathname();
+  const { locale, setLocale } = useSitePreferences();
+  const isFrench = locale === "fr";
 
-  const navLinks = [
-    { href: "/", label: "Accueil" },
-    { href: "/projets", label: "Projets" },
-    { href: "/activites", label: "Activites" },
-    { href: "/services", label: "Services" },
-    { href: "/contact", label: "Contact" },
-  ];
+  const navLinks = isFrench
+    ? [
+        { href: "/", label: "Accueil" },
+        { href: "/projets", label: "Projets" },
+        { href: "/activites", label: "Activites" },
+        { href: "/services", label: "Services" },
+        { href: "/contact", label: "Contact" },
+      ]
+    : [
+        { href: "/", label: "Home" },
+        { href: "/projets", label: "Projects" },
+        { href: "/activites", label: "Activities" },
+        { href: "/services", label: "Services" },
+        { href: "/contact", label: "Contact" },
+      ];
+
+  const languageOptions = [
+    { value: "fr", shortLabel: "FR", label: "Français" },
+    { value: "en", shortLabel: "EN", label: "English" },
+  ] as const;
 
   return (
     <header className="absolute left-0 top-0 z-50 w-full bg-gradient-to-b from-black via-black/85 to-transparent px-4 pb-4 pt-2 md:px-8 md:pt-5">
@@ -52,7 +68,7 @@ export default function Header() {
         <details className="relative ml-auto lg:hidden">
           <summary
             className="list-none cursor-pointer p-1 text-white"
-            aria-label="Ouvrir le menu"
+            aria-label={isFrench ? "Ouvrir le menu" : "Open menu"}
           >
             <span className="sr-only">Menu</span>
             <span className="flex h-6 w-7 flex-col justify-between">
@@ -77,13 +93,62 @@ export default function Header() {
                 </Link>
               );
             })}
+            <div className="mt-2 border-t border-white/10 pt-2">
+              <p className="px-2 text-[11px] font-semibold uppercase tracking-[1.2px] text-white/70">
+                {isFrench ? "Langue" : "Language"}
+              </p>
+              <div className="mt-1 grid gap-1">
+                {languageOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setLocale(option.value)}
+                    className={`flex items-center justify-between gap-2 px-2 py-2 text-[13px] font-semibold uppercase tracking-[1px] transition-colors ${
+                      locale === option.value
+                        ? "text-[#FF1E27]"
+                        : "text-white hover:text-[#FF1E27]"
+                    }`}
+                    aria-label={isFrench ? `Passer en ${option.label}` : `Switch to ${option.label}`}
+                  >
+                    <span>{option.shortLabel}</span>
+                    <span className="text-[10px] font-medium text-white/60">{option.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </nav>
         </details>
 
         <div className="hidden lg:flex lg:items-center lg:justify-end lg:gap-4">
+          <details className="relative">
+            <summary
+              className="list-none cursor-pointer rounded-sm border border-white/20 px-2 py-1 text-xs font-semibold uppercase tracking-[1.4px] text-white transition-colors hover:border-[#FF1E27]/70"
+              aria-label={isFrench ? "Choisir la langue" : "Choose language"}
+            >
+              {isFrench ? "FR" : "EN"}
+            </summary>
+            <div className="absolute right-0 mt-2 grid min-w-28 gap-1 rounded-sm border border-white/10 bg-[#101010] p-2 text-xs shadow-lg">
+              {languageOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setLocale(option.value)}
+                  className={`flex items-center justify-between gap-2 rounded-sm px-2 py-2 text-xs font-semibold uppercase tracking-[1px] transition-colors ${
+                    locale === option.value
+                      ? "text-[#FF1E27]"
+                      : "text-white hover:text-[#FF1E27]"
+                  }`}
+                  aria-label={isFrench ? `Passer en ${option.label}` : `Switch to ${option.label}`}
+                >
+                  <span>{option.shortLabel}</span>
+                  <span className="text-[10px] font-medium text-white/60">{option.label}</span>
+                </button>
+              ))}
+            </div>
+          </details>
           <a
             href="mailto:belhaouene.oussema@esprit.tn"
-            aria-label="Envoyer un email"
+            aria-label={isFrench ? "Envoyer un email" : "Send an email"}
             className="text-zinc-300 transition-colors hover:text-[#FF1E27]"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
@@ -94,7 +159,7 @@ export default function Header() {
             href="https://www.linkedin.com/in/oussema-belhou%C3%A9ne-710089224/"
             target="_blank"
             rel="noreferrer"
-            aria-label="Profil LinkedIn"
+            aria-label={isFrench ? "Profil LinkedIn" : "LinkedIn profile"}
             className="text-zinc-300 transition-colors hover:text-[#FF1E27]"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
@@ -105,7 +170,7 @@ export default function Header() {
             href="https://github.com/oussema1998"
             target="_blank"
             rel="noreferrer"
-            aria-label="Profil GitHub"
+            aria-label={isFrench ? "Profil GitHub" : "GitHub profile"}
             className="text-zinc-300 transition-colors hover:text-[#FF1E27]"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
