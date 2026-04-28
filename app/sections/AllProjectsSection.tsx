@@ -220,7 +220,6 @@ export default function AllProjectsSection() {
 											href={project.githubUrl}
 											target="_blank"
 											rel="noreferrer"
-											aria-label={`Ouvrir le repository GitHub de ${project.title}`}
 											aria-label={`${copy.openGithubLabel} ${project.title}`}
 											className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-white/20 bg-white/5 text-white transition-colors hover:border-[#FF1E27]/70 hover:text-[#FF1E27]"
 										>
