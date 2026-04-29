@@ -173,8 +173,8 @@ export default function ImpactStatsSection() {
 								{stat.icon}
 							</div>
 							<p className="text-4xl font-extrabold leading-none text-[#FF1E27] md:text-5xl">
-								+{displayValues[index]}
-								{stat.unit ? ` ${stat.unit}` : ""}
+							+{displayValues[index]}
+							{"unit" in stat ? ` ${stat.unit}` : ""}
 							</p>
 							<p className="mt-3 text-sm uppercase tracking-[1.2px] text-white/80 md:text-base">
 								{stat.label}
