@@ -25,7 +25,7 @@ const languagesByLocale: Record<"fr" | "en", Language[]> = {
 export default function LanguagesSection() {
 	const { locale } = useSitePreferences();
 	const isFrench = locale === "fr";
-	const languages = languagesByLocale[locale];
+	const languages = languagesByLocale[locale as keyof typeof languagesByLocale];
 	const copy = isFrench
 		? {
 				kicker: "Langues",

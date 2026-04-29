@@ -61,7 +61,7 @@ const leisuresByLocale: Record<"fr" | "en", Leisure[]> = {
 export default function LeisureSection() {
   const { locale } = useSitePreferences();
   const isFrench = locale === "fr";
-  const leisures = leisuresByLocale[locale];
+  const leisures = leisuresByLocale[locale as keyof typeof leisuresByLocale];
   const copy = isFrench
     ? { kicker: "Loisirs", title: "Équilibre, énergie et plein air" }
     : { kicker: "Hobbies", title: "Balance, energy, and outdoors" };

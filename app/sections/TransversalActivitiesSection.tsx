@@ -112,7 +112,7 @@ const activitiesByLocale: Record<"fr" | "en", Activity[]> = {
 export default function TransversalActivitiesSection() {
   const { locale } = useSitePreferences();
   const isFrench = locale === "fr";
-  const activities = activitiesByLocale[locale];
+const activities = activitiesByLocale[locale as keyof typeof activitiesByLocale];
   const copy = isFrench
     ? {
         kicker: "Activités transversales",

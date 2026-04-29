@@ -96,7 +96,7 @@ const testimonialsByLocale = {
 export default function TestimonialsSection() {
   const { locale } = useSitePreferences();
   const isFrench = locale === "fr";
-  const testimonials = testimonialsByLocale[locale];
+  const testimonials = testimonialsByLocale[locale as keyof typeof testimonialsByLocale];
   const testimonialsLoop = [testimonials[testimonials.length - 1], ...testimonials, testimonials[0]];
   const firstLoopIndex = 0;
   const lastLoopIndex = testimonials.length + 1;

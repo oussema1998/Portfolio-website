@@ -80,7 +80,7 @@ const featuredProjectsByLocale = {
 export default function ProjectsSection() {
   const { locale } = useSitePreferences();
   const isFrench = locale === "fr";
-  const featuredProjects = featuredProjectsByLocale[locale];
+const featuredProjects = featuredProjectsByLocale[locale as keyof typeof featuredProjectsByLocale];
   const copy = isFrench
     ? {
         kicker: "Mes projets",

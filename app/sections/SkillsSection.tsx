@@ -54,7 +54,7 @@ const skillsByLocale = {
 export default function SkillsSection() {
   const { locale } = useSitePreferences();
   const isFrench = locale === "fr";
-  const skills = skillsByLocale[locale];
+const skills = skillsByLocale[locale as keyof typeof skillsByLocale];
   const copy = isFrench
     ? {
         kicker: "Mes compétences",

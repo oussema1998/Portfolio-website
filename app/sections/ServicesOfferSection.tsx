@@ -149,7 +149,7 @@ const servicesByLocale: Record<"fr" | "en", Service[]> = {
 export default function ServicesOfferSection() {
   const { locale } = useSitePreferences();
   const isFrench = locale === "fr";
-  const services = servicesByLocale[locale];
+const services = servicesByLocale[locale as keyof typeof servicesByLocale];
   const copy = isFrench
     ? {
         kicker: "Services",
