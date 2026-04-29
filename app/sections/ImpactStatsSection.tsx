@@ -93,8 +93,8 @@ const statsByLocale = {
 export default function ImpactStatsSection() {
 	const { locale } = useSitePreferences();
 	const isFrench = locale === "fr";
-	const stats: Stat[] = statsByLocale[locale];
-	const copy = isFrench
+	const stats = statsByLocale[locale];
+		const copy = isFrench
 		? { kicker: "Impact en chiffres", title: "Resultats quantifiables" }
 		: { kicker: "Impact by the numbers", title: "Measurable results" };
 	const sectionRef = useRef<HTMLElement | null>(null);
