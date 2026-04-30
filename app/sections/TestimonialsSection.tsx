@@ -11,7 +11,7 @@ const testimonialsByLocale = {
       role: "PDG",
       organization: "@Elyssa-call",
       organizationUrl:
-        "https://www.linkedin.com/in/khouani-farid-c-e-o-d%E2%80%99elyssa-call-494082279/",
+        "https://www.elyssa-call.com/",
       image: "/images/temoignages/farid_khouani.png",
       rating: 5,
       quote:
