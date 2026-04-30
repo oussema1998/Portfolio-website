@@ -225,24 +225,29 @@ export default function HomeSlider() {
           {slidesLoop.map((slide, index) => (
             <div
               key={`${slide.image}-${index}`}
-              className="relative min-w-full aspect-[16/9]"
+              className="relative min-w-full"
+              style={{ aspectRatio: "16/9", minHeight: "320px" }}
             >
               <Image
                 src={slide.image}
                 alt={slide.title}
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 priority={index === 0}
               />
 
-              <div className="absolute inset-0 bg-black/25" />
+              {/* Dégradé sombre à gauche */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h2 className="text-4xl font-bold">{slide.title}</h2>
+              {/* Contenu — padding augmenté pour s'éloigner du bord */}
+              <div className="absolute inset-0 flex items-center">
+                <div className="px-16 sm:px-24 md:px-32 lg:px-40 max-w-2xl">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-lg">
+                    {slide.title}
+                  </h2>
                   <Link
                     href={slide.ctaHref}
-                    className="mt-6 inline-block bg-[#FF1E27] px-6 py-3 text-white"
+                    className="mt-6 inline-block bg-[#FF1E27] px-8 py-4 text-white font-semibold text-base sm:text-lg tracking-wide hover:bg-[#cc1820] transition-colors duration-200"
                   >
                     {slide.ctaLabel}
                   </Link>
@@ -252,20 +257,64 @@ export default function HomeSlider() {
           ))}
         </div>
 
+        {/* Bouton précédent — décalé du bord avec mx, fond blanc transparent, sans bordure */}
         <button
           onClick={goToPrevious}
-          aria-label={locale === "fr" ? "Image precedente" : "Previous image"}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-white"
+          aria-label={locale === "fr" ? "Image précédente" : "Previous image"}
+          className="
+            absolute top-1/2 -translate-y-1/2
+            left-3 sm:left-4
+            h-14 w-10 sm:h-20 sm:w-14
+            flex items-center justify-center
+            bg-white/20 hover:bg-white/35
+            text-white
+            rounded-sm
+            transition-all duration-200
+            backdrop-blur-sm
+          "
         >
-          {"<"}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5 sm:w-7 sm:h-7"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
         </button>
 
+        {/* Bouton suivant — décalé du bord avec mx, fond blanc transparent, sans bordure */}
         <button
           onClick={goToNext}
           aria-label={locale === "fr" ? "Image suivante" : "Next image"}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-white"
+          className="
+            absolute top-1/2 -translate-y-1/2
+            right-3 sm:right-4
+            h-14 w-10 sm:h-20 sm:w-14
+            flex items-center justify-center
+            bg-white/20 hover:bg-white/35
+            text-white
+            rounded-sm
+            transition-all duration-200
+            backdrop-blur-sm
+          "
         >
-          {">"}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5 sm:w-7 sm:h-7"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </button>
       </div>
     </section>
